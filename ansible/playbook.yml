@@ -3,5 +3,5 @@
   connection: local
   sudo: yes
   roles:
-    - gotansible.golang
+    - golang
     - openssh
