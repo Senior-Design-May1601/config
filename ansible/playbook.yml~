@@ -1,0 +1,4 @@
+---
+- hosts: defaults
+  roles:
+    - gotansible.golang
