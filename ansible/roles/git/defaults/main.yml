@@ -1,0 +1,42 @@
+#Change the path from /tmp/git to wherever we want to install the project
+
+git:
+  path: /tmp/git
+  settings:
+    alias:
+      # Useful aliases
+      # cf. https://git.wiki.kernel.org/index.php/Aliases
+      apply: 'apply --index'
+      st: 'status'
+      ci: 'commit'
+      br: 'branch'
+      co: 'checkout'
+      df: 'diff'
+      dc: 'diff --cached'
+      ds: 'diff --staged'
+      who: 'shortlog -s --'
+      lp: 'log -p'
+      lg: 'log --graph --pretty=oneline --abbrev-commit'
+      lt: "log --color=always --pretty=format:'%h :: %cD, %Cblue%an%Creset: %Cgreen%s%Creset'"
+      ls: 'log --stat'
+      tagdt: log --tags --simplify-by-decoration --pretty=format:'%ai %d'
+      tagdate: log --date-order --graph --tags --simplify-by-decoration --pretty=format:'%ai %h %d'
+    branch:
+      autosetuprebase: 'always'
+    core:
+      autocrlf: 'false'
+      safecrlf: 'false'
+      ignorecase: 'false'
+      excludesfile: '~/.gitignore'
+      editor: 'nano'
+    color:
+      diff: 'true'
+      status: 'true'
+      branch: 'true'
+      ui: 'true'
+    merge:
+      tool: meld
+    push:
+      default: simple
+  repositories:
+      webauth: https://github.com/Senior-Design-May1601/webauth.git

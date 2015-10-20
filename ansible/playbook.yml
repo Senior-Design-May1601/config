@@ -4,3 +4,4 @@
   roles:
     - golang
     - openssh
+    - git
