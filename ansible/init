@@ -9,9 +9,12 @@ SECRET_DIR="secret"
 KEY_DIR="${SECRET_DIR}/keys"
 KEY_FILE="${KEY_DIR}/deploy-key"
 PASSWD_DIR="${SECRET_DIR}/passwords"
-PASSWD_FILE="${PASSWD_DIR}/root.txt"
+ROOT_PASSWD_FILE="${PASSWD_DIR}/root.csv"
+DEPLOY_PASSWD_FILE="${PASSWD_DIR}/deploy.csv"
 
 mkdir -p ${KEY_DIR} ${PASSWD_DIR}
 echo "Generating new root password."
-echo $(head -c 32 /dev/urandom | xxd -p | tr -d '\n') > ${PASSWD_FILE}
+echo "root,$(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" > ${ROOT_PASSWD_FILE}
+echo "Generating new deploy password."
+echo "deploy,$(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" > ${DEPLOY_PASSWD_FILE}
 ssh-keygen -t ed25519 -a 100 -f ${KEY_FILE}
