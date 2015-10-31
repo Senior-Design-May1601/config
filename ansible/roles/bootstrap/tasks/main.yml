@@ -1,0 +1,9 @@
+---
+- name: Setup users
+  include: users.yml
+
+- name: Configure SSH
+  include: ssh.yml
+
+- name: Configure IPTables
+  include: iptables.yml

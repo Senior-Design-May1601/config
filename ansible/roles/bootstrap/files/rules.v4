@@ -1,0 +1,40 @@
+*filter
+
+# default drop
+:INPUT DROP [0:0]
+:FORWARD DROP [0:0]
+:OUTPUT DROP [0:0]
+:LOGNDROP - [0:0]
+
+# allow loopback traffic
+-A INPUT -i lo -j ACCEPT
+-A OUTPUT -o lo -j ACCEPT
+
+# allow initial ping -- future packets handled by established/related rule
+-A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+
+# don't mess with established connections
+-A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+-A OUTPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+
+# allow limited outbound:
+# dns
+-A OUTPUT -p tcp --dport 53  -j ACCEPT
+-A OUTPUT -p udp --dport 53  -j ACCEPT
+# dhcp
+-A OUTPUT -p udp --dport 67  -j ACCEPT
+-A OUTPUT -p udp --dport 68  -j ACCEPT
+# http/https
+-A OUTPUT -p tcp --dport 80  -j ACCEPT
+-A OUTPUT -p tcp --dport 443 -j ACCEPT
+
+# allow inbound ssh
+-A INPUT -p tcp --dport 22 -j ACCEPT
+
+# log shadiness
+-A INPUT -j LOGNDROP
+-A OUTPUT -j LOGNDROP
+-A LOGNDROP -j LOG --log-prefix "IPTables-Dropped: " --log-level 4
+-A LOGNDROP -j DROP
+
+COMMIT

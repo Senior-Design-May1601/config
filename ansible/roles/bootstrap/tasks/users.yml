@@ -1,0 +1,29 @@
+---
+- name: Set local password fact
+  set_fact:
+    root_passwd: "{{lookup('csvfile', 'root file=../../../secret/passwords/root.csv delimiter=,')}}"
+    deploy_passwd: "{{lookup('csvfile', 'deploy file=../../../secret/passwords/deploy.csv delimiter=,')}}"
+
+- name: Hash root password in crypt format
+  command: mkpasswd --method=SHA-512 {{root_passwd}}
+  register: rp_hashed
+
+- name: Hash deploy password in crypt format
+  command: mkpasswd --method=SHA-512 {{deploy_passwd}}
+  register: dp_hashed
+
+- name: Change root password
+  user: name=root password="{{rp_hashed.stdout}}"
+
+- name: Setup deploy user
+  user: name=deploy password="{{dp_hashed.stdout}}" groups=sudo append=yes
+
+- name: Setup public key auth for deploy account
+  authorized_key: user=deploy
+                  key="{{ lookup('file', item) }}"
+  with_items: deploy_key
+
+# TODO: how to delete this user in the same role?
+#- name: Delete default pi account
+#  remote_user: deploy 
+#  user: name=pi state=absent remove=yes
