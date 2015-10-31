@@ -1,0 +1,19 @@
+#! /usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+
+SECRET_DIR="secret"
+KEY_DIR="${SECRET_DIR}/keys"
+KEY_FILE="${KEY_DIR}/deploy-key"
+PASSWD_DIR="${SECRET_DIR}/passwords"
+PASSWD_FILE="${PASSWD_DIR}/root.txt"
+
+mkdir ${SECRET_DIR}
+mkdir ${KEY_DIR}
+mkdir ${PASSWD_DIR}
+
+echo "Generating new root password."
+echo $(head -c 32 /dev/urandom | xxd -p | tr -d '\n') >> ${PASSWD_FILE}
+ssh-keygen -t ed25519 -a 100 -f ${KEY_FILE}
