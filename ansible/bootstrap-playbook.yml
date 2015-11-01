@@ -17,7 +17,6 @@
         - {role: lockdown-ssh, sudo: yes}
         - {role: iptables, sudo: yes}
 
-# cleanup play here
 -
     name: Package install
     hosts: all
@@ -25,7 +24,6 @@
         - vars/secrets.yml
     vars:
         ansible_become_pass: "{{deploy_pass}}"
-    tasks:
-        - debug: msg="pass {{ansible_become_pass}}"
     roles:
         - {role: git, sudo: yes}
+        - {role: golang, sudo: yes}
