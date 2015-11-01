@@ -1,0 +1,3 @@
+---
+- name: Create unprivileged "{{unprivileged_user}}" user.
+  user: name="{{unprivileged_user}}" shell=/bin/false createhome=no system=yes state=present

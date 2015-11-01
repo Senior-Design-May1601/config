@@ -3,8 +3,6 @@
   command: mkpasswd --method=SHA-512 {{deploy_pass}}
   register: dp_hashed
 
-- debug: msg="deploy hashed {{dp_hashed}}"
-
 - name: Setup deploy user
   user: name=deploy password="{{dp_hashed.stdout}}" groups=sudo append=yes
 
