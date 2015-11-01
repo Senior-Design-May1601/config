@@ -1,6 +1,0 @@
----
-- name: restart ssh
-  service: name=ssh state=restarted
-
-- name: reload iptables
-  shell: iptables-restore < /etc/iptables/rules.v4
