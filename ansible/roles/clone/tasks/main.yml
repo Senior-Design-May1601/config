@@ -1,0 +1,6 @@
+---
+- name: Create "{{dest}}" directory.
+  file: path={{dest}} state=directory
+
+- name: Clone "{{repo}}".
+  git: repo={{repo}} dest={{dest}}
