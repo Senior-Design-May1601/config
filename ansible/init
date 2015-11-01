@@ -5,23 +5,34 @@ set -o nounset
 set -o pipefail
 set -o noclobber
 
-SECRET_DIR="secret"
-KEY_DIR="${SECRET_DIR}/keys"
+KEY_DIR="keys"
 KEY_FILE="${KEY_DIR}/deploy-key"
-PASSWD_DIR="${SECRET_DIR}/passwords"
-ROOT_PASSWD_FILE="${PASSWD_DIR}/root.csv"
-DEPLOY_PASSWD_FILE="${PASSWD_DIR}/deploy.csv"
+VAR_DIR="vars"
+SECRETS_FILE="${VAR_DIR}/secrets.yml"
 HOSTS_DIR="hosts"
 
-echo "Setting up hosts directory."
-mkdir -p ${KEY_DIR} ${PASSWD_DIR} ${HOSTS_DIR}
+echo "Creating directories."
+mkdir -p ${KEY_DIR} ${HOSTS_DIR} ${VAR_DIR}
 touch ${HOSTS_DIR}/hosts
 touch ${HOSTS_DIR}/new
 
+echo "default_pi_user: pi" > ${SECRETS_FILE}
+echo "default_pi_pass: raspberry" >> ${SECRETS_FILE}
+
 echo "Generating new root password."
-echo "root,$(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" > ${ROOT_PASSWD_FILE}
+echo "root_pass: $(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" >> ${SECRETS_FILE}
 
 echo "Generating new deploy password."
-echo "deploy,$(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" > ${DEPLOY_PASSWD_FILE}
+echo "deploy_pass: $(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" >> ${SECRETS_FILE}
 
+echo ""
+echo "The password file will be encrypted using ansible-vault."
+echo "Remember your ansible-vault password. You'll need this every time"
+echo "you run (TODO: HONEYPOT NAME) playbooks, and it's unrecoverable."
+echo ""
+ansible-vault encrypt vars/secrets.yml
+
+echo ""
+echo "Generating deployment SSH keypair."
+echo ""
 ssh-keygen -t ed25519 -a 100 -f ${KEY_FILE}

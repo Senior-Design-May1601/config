@@ -1,10 +1,10 @@
 ---
-- name: Set root password fact
-  set_fact:
-    root_passwd: "{{lookup('csvfile', 'root file=../../../secret/passwords/root.csv delimiter=,')}}"
+#- name: Set root password fact
+#  set_fact:
+#    root_passwd: "{{lookup('csvfile', 'root file=../../../secret/passwords/root.csv delimiter=,')}}"
 
 - name: Hash root password in crypt format
-  command: mkpasswd --method=SHA-512 {{root_passwd}}
+  command: mkpasswd --method=SHA-512 {{root_pass}}
   register: rp_hashed
 
 - name: Change root password

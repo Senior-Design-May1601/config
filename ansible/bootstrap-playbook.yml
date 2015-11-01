@@ -2,14 +2,30 @@
 #### Playbook to bootstrap new honeypots.
 # TODO: better docs
 -
-    name: Bootstrap
-    hosts: new
+    name: System config
+    hosts: all
+    vars_files:
+        - vars/secrets.yml
     vars:
-        ansible_ssh_user:   pi
-        ansible_ssh_pass:   raspberry
-        ansible_sudo_pass:  raspberry
-        ansible_ssh_port:   22
-        root_passwd_file:   secret/passwords/root.txt
-        deploy_key:         secret/keys/deploy-key.pub
+        ansible_ssh_user: "{{default_pi_user}}"
+        ansible_ssh_pass: "{{default_pi_pass}}"
+        ansible_become_pass: "{{default_pi_pass}}"
+        deploy_key: keys/deploy-key.pub
     roles:
-        - {role: bootstrap, sudo: yes}
+        - {role: config-root-user, sudo: yes}
+        - {role: config-deploy-user, sudo: yes}
+        - {role: lockdown-ssh, sudo: yes}
+        - {role: iptables, sudo: yes}
+
+# cleanup play here
+-
+    name: Package install
+    hosts: all
+    vars_files:
+        - vars/secrets.yml
+    vars:
+        ansible_become_pass: "{{deploy_pass}}"
+    tasks:
+        - debug: msg="pass {{ansible_become_pass}}"
+    roles:
+        - {role: git, sudo: yes}
