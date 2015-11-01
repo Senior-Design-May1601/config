@@ -29,3 +29,9 @@
         - {role: git, sudo: yes}
         - {role: golang, sudo: yes}
         - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: /home/deploy/src/webauth}
+
+-
+    name: Build
+    hosts: all
+    roles:
+        - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth}

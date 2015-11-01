@@ -1,0 +1,13 @@
+---
+- name: Create "{{bin_dir}}" directory.
+  file: path="{{bin_dir}}" state=directory
+
+- name: Build "{{package}}" package.
+  command: go build
+  args:
+    chdir: "{{src_dir}}"
+
+- name: Copy "{{package}}" to "{{bin_dir}}".
+  command: cp "{{package}}" "{{bin_dir}}"
+  args:
+    chdir: "{{src_dir}}"
