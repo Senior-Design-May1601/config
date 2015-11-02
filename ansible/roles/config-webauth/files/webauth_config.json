@@ -1,0 +1,7 @@
+{
+    "Root_dir": "/home/deploy/src/webauth/",
+    "Certificate": "tls/dummy_cert.pem",
+    "Key": "tls/dummy_key.pem",
+    "Http_port": "8080",
+    "Https_port": "8443"
+}
