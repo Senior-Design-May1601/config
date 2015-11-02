@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Nik Kinkel
+  description: Configure a systemd service file and start the service.
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+  - name: Debian
+    versions:
+    - jessie
+    - squeeze
+    - wheezy
+  categories:
+  - system
+dependencies: []
