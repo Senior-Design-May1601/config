@@ -35,3 +35,14 @@
     hosts: all
     roles:
         - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth}
+        - {role: config-webauth}
+
+-
+    name: Start Services
+    hosts: all
+    vars_files:
+        - vars/secrets.yml
+    vars:
+        ansible_become_pass: "{{deploy_pass}}"
+    roles:
+        - {role: start-service, sudo: yes, name: webauth, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
