@@ -8,24 +8,28 @@ Vagrant.configure(2) do |config|
 
 		#set private static network address
 		pi.vm.network :private_network, ip:'192.168.42.42'
-
+		pi.vm.network "forwarded_port", guest:22,host:22 
 		#disable synced folders for pi machine
 		pi.vm.synced_folder ".", "/vagrant", disabled:true
-		
-		#add default username/passwd
-		pi.vm.provision "shell", inline: "sudo useradd pi;
-						sudo echo pi:raspberry | chpasswd;"
 
-		#provision pi by running ansible playbook
-		#pi.vm.provision "ansible" do |ansible|
-		#	ansible.playbook = "bootstrap-playbook.yml
+		#build default Raspverry Pi environment	
+		pi.vm.provision "ansible" do |ansible|
+			ansible.ask_vault_pass = false
+			ansible.playbook = "pi-start.yml"
+		end					
+		#provision Pi as Honeypot device
+		pi.vm.provision "ansible" do |ansible|
+			ansible.playbook = "bootstrap-playbook.yml"
+			ansible.verbose = "v"
 		#	ansible.force_remote_user = false
-		#	ansible.inventory_path("hosts/hostfile")
-		#end
+
+		#force paramiko connection mode
+			ansible.raw_arguments = ["--connection=paramiko"]
+		end
  	end
 
 	config.vm.define "admin" do |admin|
-  		admin.vm.box = "puppetlabs/debian-7.8-32-nocm"
+  		admin.vm.box = "puppetlabs/debian-7.8-3:2-nocm"
 
 		
 		#set private static network address

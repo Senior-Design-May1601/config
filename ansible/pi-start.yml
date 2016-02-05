@@ -1,0 +1,12 @@
+---
+## playbook to setup default raspberry pi
+
+-
+    name: User Config
+    hosts: pi
+    sudo: yes
+
+    tasks:
+      - name: Create Pi user
+        shell : sudo useradd pi;sudo echo pi:raspberry | chpasswd;chsh -s /bin/bash pi;
+...

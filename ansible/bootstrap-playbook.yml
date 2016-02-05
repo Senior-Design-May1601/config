@@ -3,7 +3,7 @@
 # TODO: better docs
 -
     name: System config
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:
