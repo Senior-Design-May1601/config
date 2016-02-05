@@ -1,0 +1,65 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |config|
+
+	config.vm.define "pi" do |pi|
+		pi.vm.box = "puppetlabs/debian-7.8-32-nocm"
+
+		#set private static network address
+		pi.vm.network :private_network, ip:'192.168.42.42'
+
+		#disable synced folders for pi machine
+		pi.vm.synced_folder ".", "/vagrant", disabled:true
+		
+		#add default username/passwd
+		pi.vm.provision "shell", inline: "sudo useradd pi;
+						sudo echo pi:raspberry | chpasswd;"
+
+		#provision pi by running ansible playbook
+		#pi.vm.provision "ansible" do |ansible|
+		#	ansible.playbook = "bootstrap-playbook.yml
+		#	ansible.force_remote_user = false
+		#	ansible.inventory_path("hosts/hostfile")
+		#end
+ 	end
+
+	config.vm.define "admin" do |admin|
+  		admin.vm.box = "puppetlabs/debian-7.8-32-nocm"
+
+		
+		#set private static network address
+  		admin.vm.network :private_network, ip:'192.168.42.43'
+		#port forward splunk web interface to host machine
+		#can access interface at http://192.168.42.43:8000
+		admin.vm.network "forwarded_port", guest:8000,host:8000
+		#provision splunk server
+		admin.vm.provision "shell", inline: "
+					if [ -e 'splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb' ] 
+					then 
+						echo '-----Splunk already downloaded-----';
+					else 
+						echo '-----Downloading Splunk-----';
+						sudo wget -q http://download.splunk.com/products/splunk/releases/6.3.2/splunk/linux/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb;
+					fi
+					if [ -d '/opt/splunk/bin' ]
+					then 
+						echo '-----Splunk Already Installed-----';
+					else
+						echo '-----Installing Splunk-----';
+						sudo mkdir /opt/splunk;
+						sudo cp splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb /opt/splunk;
+						sudo dpkg -i /opt/splunk/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb;
+					fi
+					echo '-----Starting Splunk-----';
+					sudo /opt/splunk/bin/splunk start --accept-license;
+					echo 'Splunk Interface can be found on Host Machine at 192.168.42.43:8000';
+					echo 'User:admin	Password:pi'
+					export SPLUNK_HOME=/opt/splunk;
+					export PATH=$SPLUNK_HOME/bin:$PATH;
+					splunk edit user admin -password pi -role admin -auth admin:changeme
+					splunk http-event-collector create my-test-token -uri https://localhost:8089 -disabled 0 -index log;
+					"
+	end
+end
+
