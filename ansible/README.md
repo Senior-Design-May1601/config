@@ -33,3 +33,19 @@ to run the playbook.
 *NOTE*: a hostfile is purposefully left unspecified to try to help avoid
 accidentally running the bootstrap playbook on an established (TODO: name?)
 device. The `-i` argument manually specifies an inventory file to use.
+
+#### Vagrant Usage
+
+to Run Vagrant test network hosts file should look something like
+[pi]
+192.168.42.43
+[admin]
+192.168.42.42
+
+With this in place one should simply be able to 'vagrant up'  and Vm's should provision themselves.
+
+
+#### Splunk communication
+
+Once the Admin Vm has been provisioned, user should be able to access the Splunk web service on their host machine at 
+192.168.42.42:8000
