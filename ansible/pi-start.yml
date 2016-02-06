@@ -6,7 +6,6 @@
     hosts: pi
     sudo: yes
 
-    tasks:
-      - name: Create Pi user
-        shell : sudo useradd pi;sudo echo pi:raspberry | chpasswd;chsh -s /bin/bash pi;
+    roles:
+      - {role: create-pi-user, sudo: yes}
 ...

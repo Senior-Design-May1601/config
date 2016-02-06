@@ -1,0 +1,9 @@
+---
+- name: Create Pi user
+  shell : useradd pi;
+
+- name: set pi user pass
+  shell : echo pi:raspberry | chpasswd;
+
+- name : set bash
+  shell : chsh -s /bin/bash pi;

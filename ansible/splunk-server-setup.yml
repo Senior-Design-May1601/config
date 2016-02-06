@@ -1,0 +1,11 @@
+---
+##playbook for starting splunk test server vm
+
+-
+    name: Splunk
+    hosts: admin
+    sudo: yes
+
+    roles:
+      - {role: splunk-server, sudo: yes}
+...
