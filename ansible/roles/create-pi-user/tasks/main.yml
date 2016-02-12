@@ -1,24 +1,15 @@
 ---
-- name: set pi user pass
-  shell : echo pi:raspberry | chpasswd;
-  
-#- name: Set user pi pass
-#  Note: in the line below "default pi pass" comes from "init" 
-#  do we want to use that or something else? -- if so do we need to re-hash it?
-#  command: mkpasswd --method=SHA-512 {{default_pi_pass}
-#  register: pi_pass_hashed
+
+- name: Set user pi pass
+  command: mkpasswd --method=SHA-512 {{default_pi_pass}}
+  register: pi_pass_hashed
   
 - name: Create Pi user
-  shell : useradd pi;
-  
-#- name: Create Pi user
-#  user: name=pi password="{{pi_pass_hashed.stdout}}" groups=sudo append=yes
-  
+  user: name=pi password="{{pi_pass_hashed.stdout}}" groups=sudo append=yes
+
 #- name: Setup public key auth for pi user
 #  authorized_key: user=pi
 #                  key="{{lookup('file', item)}}"
 #  Note: I think we need to add this key in the bootstrap-playbook, similar to "deploy_key"
 #  with_items: pi_key
 
-- name : set bash
-  shell : chsh -s /bin/bash pi;

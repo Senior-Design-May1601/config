@@ -20,7 +20,7 @@
 
 -
     name: Package install
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:
@@ -32,14 +32,14 @@
 
 -
     name: Build
-    hosts: all
+    hosts: pi
     roles:
         - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth}
         - {role: config-webauth}
 
 -
     name: Start Services
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:

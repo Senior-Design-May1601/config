@@ -4,6 +4,8 @@
 -
     name: User Config
     hosts: pi
+    vars_files:
+        - vars/secrets.yml
     sudo: yes
 
     roles:

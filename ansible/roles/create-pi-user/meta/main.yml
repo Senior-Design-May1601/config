@@ -11,5 +11,5 @@ galaxy_info:
     - squeeze
     - wheezy
   categories:
-  - development
+  - system
 dependencies: []
