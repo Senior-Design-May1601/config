@@ -7,6 +7,16 @@ readme coming soon.
 
 This set of ansible plays will setup a (TODO: name?) device.
 
+#### Dependencies
+
+There are several dependencies necessary to execute the these playbooks.
+Note that Ansible should be installed using `pip`.
+
+Make sure the following are installed:
+   * `Ansible 1.9+`
+   * `Vagrant 1.8.1+`
+   * `Sshpass`
+
 #### Initialization
 
 Initialization should be done the first time you setup a (TODO: name) device
