@@ -49,7 +49,7 @@ device. The `-i` argument manually specifies an inventory file to use.
 to Run Vagrant test network hosts file should look something like
 [pi]
 192.168.42.43
-[admin]
+[splunk]
 192.168.42.42
 
 With this in place one should simply be able to 'vagrant up'  and Vm's should provision themselves.
@@ -57,5 +57,5 @@ With this in place one should simply be able to 'vagrant up'  and Vm's should pr
 
 #### Splunk communication
 
-Once the Admin Vm has been provisioned, user should be able to access the Splunk web service on their host machine at 
+Once the Splunk Vm has been provisioned, user should be able to access the Splunk web service on their host machine at 
 192.168.42.42:8000
