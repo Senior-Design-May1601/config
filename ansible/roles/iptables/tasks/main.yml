@@ -5,8 +5,16 @@
 - name: Copy iptables rules
   copy: src=../files/rules.v4 dest=/etc/iptables/rules.v4 owner=root group=root mode=0644
 
-- name: reload iptables
-  shell: iptables-restore < /etc/iptables/rules.v4
+#- name: reload iptables
+#  shell: iptables-restore < /etc/iptables/rules.v4
 
-- name: DEBUG
-  shell: echo iptables-restore has run
+- name: Install UFW
+  apt: name=ufw state=present
+
+- name: Allow SSH
+  ufw: proto=tcp port=22 rule=allow
+
+- name: Reload via UFW
+  ufw: state=enabled
+
+
