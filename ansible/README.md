@@ -47,7 +47,8 @@ device. The `-i` argument manually specifies an inventory file to use.
 #### Vagrant Usage
 
 to Run Vagrant test network hosts file should look something like
-[pi]
+
+[ip]
 192.168.42.43
 [splunk]
 192.168.42.42
