@@ -16,7 +16,7 @@
         - {role: config-deploy-user, sudo: yes}
         - {role: unprivileged-user, sudo: yes, unprivileged_user: webauth}
         - {role: lockdown-ssh, sudo: yes}
-        - {role: iptables, sudo: yes}
+        #- {role: iptables, sudo: yes}
 
 -
     name: Package install
@@ -28,7 +28,7 @@
     roles:
         - {role: git, sudo: yes}
         - {role: golang, sudo: yes}
-        - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: /home/deploy/src/webauth}
+        - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: '/home/deploy/src/webauth', sudo: yes}
 
 -
     name: Build

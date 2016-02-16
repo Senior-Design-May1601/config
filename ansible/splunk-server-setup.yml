@@ -3,7 +3,7 @@
 
 -
     name: Splunk
-    hosts: admin
+    hosts: splunk
     sudo: yes
 
     roles:
