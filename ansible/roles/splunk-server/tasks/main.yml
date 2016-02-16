@@ -1,4 +1,7 @@
 ---
+##for documentation on configuring splunk http-eventcollector via CLI visit
+##http://dev.splunk.com/view/event-collector/SP-CAAAE7D
+
 - name: Create Directory
   file: path=/opt/splunk state=directory
 

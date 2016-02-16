@@ -7,8 +7,11 @@
 - name: Create "{{bin_dir}}" directory.
   shell: sudo mkdir -p "{{bin_dir}}"
 
+#temp set go path
+- name: temp set go path
+  shell: export PATH=$PATH:/usr/local/go/bin
 
-- name: Build "{{package}" package.
+- name: Build "{{package}}" package.
   command: go build
   args:
     chdir: "{{src_dir}}"
