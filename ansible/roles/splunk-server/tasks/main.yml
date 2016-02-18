@@ -16,5 +16,5 @@
 #  shell: export SPLUNK_HOME/opt/splunk
 #; export PATH=$SPLUNK_HOME/bin:$PATH; 
 - name: Config Splunk
-  shell: /opt/splunk/bin/splunk http-event-collector create my-test-token -uri https://localhost:8089 -disabled 0 -index log -auth admin:changeme 
+  shell: /opt/splunk/bin/splunk http-event-collector create my-test-token -uri https://localhost:8088 -disabled 0 -index log -auth admin:changeme 
     creates=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf
