@@ -1,4 +1,7 @@
 ---
+##for documentation on configuring splunk http-eventcollector via CLI visit
+##http://dev.splunk.com/view/event-collector/SP-CAAAE7D
+
 - name: Create Directory
   file: path=/opt/splunk state=directory
 
@@ -16,5 +19,4 @@
 #  shell: export SPLUNK_HOME/opt/splunk
 #; export PATH=$SPLUNK_HOME/bin:$PATH; 
 - name: Config Splunk
-  shell: /opt/splunk/bin/splunk http-event-collector create my-test-token -uri https://localhost:8088 -disabled 0 -index log -auth admin:changeme 
-    creates=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf
+  shell: /opt/splunk/bin/splunk http-event-collector create my-test-token -uri https://localhost:8088 -disabled 0 -index log -auth admin:changeme creates=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf

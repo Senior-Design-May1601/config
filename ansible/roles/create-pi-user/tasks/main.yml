@@ -6,10 +6,3 @@
   
 - name: Create Pi user
   user: name=pi password="{{pi_pass_hashed.stdout}}" groups=sudo append=yes
-
-#- name: Setup public key auth for pi user
-#  authorized_key: user=pi
-#                  key="{{lookup('file', item)}}"
-#  Note: I think we need to add this key in the bootstrap-playbook, similar to "deploy_key"
-#  with_items: pi_key
-

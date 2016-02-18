@@ -15,8 +15,8 @@
         - {role: config-root-user, sudo: yes}
         - {role: config-deploy-user, sudo: yes}
         - {role: unprivileged-user, sudo: yes, unprivileged_user: webauth}
-        - {role: lockdown-ssh, sudo: yes}
-        - {role: iptables, sudo: yes}
+        #- {role: lockdown-ssh, sudo: yes}
+        #- {role: iptables, sudo: yes}
 
 -
     name: Package install
@@ -28,21 +28,23 @@
     roles:
         - {role: git, sudo: yes}
         - {role: golang, sudo: yes}
-        - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: /home/deploy/src/webauth}
+        - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: '/home/deploy/src/webauth', sudo: yes}
 
 -
     name: Build
     hosts: pi
     roles:
-        - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth}
-        - {role: config-webauth}
+        - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth, sudo: yes}
+        - {role: config-webauth, sudo: yes}
+        - {role: iptables, sudo: yes}
 
--
-    name: Start Services
-    hosts: pi
-    vars_files:
-        - vars/secrets.yml
-    vars:
-        ansible_become_pass: "{{deploy_pass}}"
-    roles:
-        - {role: start-service, sudo: yes, name: webauth, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
+##dated role not used with new architecture.
+#-
+#    name: Start Services
+#    hosts: pi
+#    vars_files:
+#        - vars/secrets.yml
+#    vars:
+#        ansible_become_pass: "{{deploy_pass}}"
+#    roles:
+#        - {role: start-service, sudo: yes, name: webauth, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}

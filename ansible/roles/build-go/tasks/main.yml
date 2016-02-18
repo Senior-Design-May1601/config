@@ -1,8 +1,17 @@
 ---
-- name: Create {{bin_dir}} directory.
-  file: path={{bin_dir}} state=directory
+#in version 2.0.0.2 this function causes a crash
+#- name: Create {{bin_dir}} directory.
+#  file: path={{bin_dir}} state=directory
 
-- name: Build {{package}} package.
+#temp make directory workaround
+- name: Create "{{bin_dir}}" directory.
+  shell: sudo mkdir -p "{{bin_dir}}"
+
+#temp set go path
+- name: temp set go path
+  shell: export PATH=$PATH:/usr/local/go/bin
+
+- name: Build "{{package}}" package.
   command: go build
   args:
     chdir: "{{src_dir}}"

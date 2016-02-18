@@ -1,6 +1,11 @@
 ---
+#in version 2.0.0.2 this function causes a crash
+#- name: Create "{{dest}}" directory.
+#  file: path={{dest}} state=directory
+
+#temp make directory work around.
 - name: Create "{{dest}}" directory.
-  file: path={{dest}} state=directory
+  shell: sudo mkdir -p "{{dest}}"
 
 - name: Clone "{{repo}}".
   git: repo={{repo}} dest={{dest}}

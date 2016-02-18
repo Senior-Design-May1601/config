@@ -1,3 +1,18 @@
 ---
-- name: Install golang.
-  apt: name=golang state=present
+##installs dated version of goLang, opt to install from source
+#- name: Install golang.
+#  apt: name=golang state=present
+
+
+- name: Download Go Tarball.
+  get_url: url=https://storage.googleapis.com/golang/go1.5.3.linux-386.tar.gz dest=/usr/local/src/go1.5.3.linux-386.tar.gz
+
+- name: unpackage tarball
+  unarchive: src=/usr/local/src/go1.5.3.linux-386.tar.gz dest=/usr/local/ copy=no
+
+  #standard: $ export PATH=$PATH:/usr/local/go/bin will not work
+- name: set GO path.
+  lineinfile: "dest=/etc/profile state=present line='export PATH=$PATH:/usr/local/go/bin'"
+
+- name: set GOPATH.
+  lineinfile: "dest=/etc/profile state=present line='export GOPATH=$HOME/work'"
