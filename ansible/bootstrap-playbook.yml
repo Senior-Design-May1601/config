@@ -16,7 +16,7 @@
         - {role: config-deploy-user, sudo: yes}
         - {role: unprivileged-user, sudo: yes, unprivileged_user: webauth}
         #- {role: lockdown-ssh, sudo: yes}
-        #- {role: iptables, sudo: yes}
+        - {role: iptables, sudo: yes}
 
 -
     name: Package install
@@ -36,7 +36,7 @@
     roles:
         - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth, sudo: yes}
         - {role: config-webauth, sudo: yes}
-        - {role: iptables, sudo: yes}
+        #- {role: iptables, sudo: yes}
 
 ##dated role not used with new architecture.
 #-

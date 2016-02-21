@@ -3,7 +3,6 @@
 #- name: Install golang.
 #  apt: name=golang state=present
 
-
 - name: Download Go Tarball.
   get_url: url=https://storage.googleapis.com/golang/go1.5.3.linux-386.tar.gz dest=/usr/local/src/go1.5.3.linux-386.tar.gz
 
