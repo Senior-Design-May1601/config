@@ -6,7 +6,7 @@
 - name: Download Go Tarball.
   get_url: url=https://storage.googleapis.com/golang/go1.5.3.linux-386.tar.gz dest=/usr/local/src/go1.5.3.linux-386.tar.gz
 
-- name: unpackage tarball
+- name: unpack tarball
   unarchive: src=/usr/local/src/go1.5.3.linux-386.tar.gz dest=/usr/local/ copy=no
 
   #standard: $ export PATH=$PATH:/usr/local/go/bin will not work

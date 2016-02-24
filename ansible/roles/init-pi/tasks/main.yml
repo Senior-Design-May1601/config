@@ -1,0 +1,11 @@
+---
+
+- name: Set user pi pass
+  command: mkpasswd --method=SHA-512 {{default_pi_pass}}
+  register: pi_pass_hashed
+  
+- name: Create Pi user
+  user: name=pi password="{{pi_pass_hashed.stdout}}" groups=sudo append=yes
+
+- name: Enable persistant vagrant access
+  action: lineinfile dest=/etc/ssh/sshd_config regexp="^AllowUsers" line="AllowUsers vagrant" state=present

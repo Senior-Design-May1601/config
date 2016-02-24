@@ -4,8 +4,7 @@
 -
     name: Splunk
     hosts: splunk
-    sudo: yes
 
     roles:
-      - {role: splunk-server, sudo: yes}
+      - {role: splunk-server, become: yes}
 ...

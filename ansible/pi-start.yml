@@ -6,8 +6,7 @@
     hosts: pi
     vars_files:
         - vars/secrets.yml
-    sudo: yes
 
     roles:
-      - {role: create-pi-user, sudo: yes}
+      - {role: init-pi, become: yes}
 ...

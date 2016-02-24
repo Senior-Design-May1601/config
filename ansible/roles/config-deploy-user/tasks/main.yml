@@ -4,7 +4,7 @@
   register: dp_hashed
 
 - name: Setup deploy user
-  user: name=deploy password="{{dp_hashed.stdout}}" groups=sudo append=yes
+  user: name=deploy password="{{dp_hashed.stdout}}" groups=sudo append=yes shell=/bin/bash
 
 - name: Setup public key auth for deploy account
   authorized_key: user=deploy
