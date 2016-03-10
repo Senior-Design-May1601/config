@@ -13,8 +13,8 @@ There are several dependencies necessary to execute the these playbooks.
 Note that Ansible should be installed using 'pip'.
 
 Make sure the following are installed:
-   * Ansible 1.9+
-   * Vagrant 1.8.1+
+   * Ansible 1.9.3
+   * Vagrant 1.8.1
    * Sshpass
 
 #### Initialization
