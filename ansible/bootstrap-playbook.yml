@@ -3,7 +3,7 @@
 # TODO: better docs
 -
     name: System config
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:
@@ -20,7 +20,7 @@
 
 -
     name: Package install
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:
@@ -34,7 +34,7 @@
 
 -
     name: Build
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:
@@ -47,7 +47,7 @@
 
 -
     name: Start Services
-    hosts: all
+    hosts: pi
     vars_files:
         - vars/secrets.yml
     vars:

@@ -1,3 +1,6 @@
 ---
 - name: reload iptables
-  shell: sudo iptables-restore < /etc/iptables/rules.v4
+  shell: echo "Reloading Iptables"; sudo iptables-restore < /etc/iptables/rules.v4
+  args:
+    executable: /bin/bash
+

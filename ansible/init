@@ -1,6 +1,4 @@
-#! /usr/bin/env bash
-
-set -o errexit
+et -o errexit
 set -o nounset
 set -o pipefail
 set -o noclobber
@@ -18,7 +16,6 @@ touch ${HOSTS_DIR}/new
 
 echo "default_pi_user: pi" > ${SECRETS_FILE}
 echo "default_pi_pass: raspberry" >> ${SECRETS_FILE}
-echo "deploy_user: deploy" >> ${SECRETS_FILE}
 
 echo "Generating new root password."
 echo "root_pass: $(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" >> ${SECRETS_FILE}

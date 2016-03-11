@@ -2,12 +2,25 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-	#config.vm.provider "virtualbox" do |v|
-  	#	v.gui = true
-	#end
-	#config.ssh.private_key_path="keys/deploy-key"
+	config.vm.provider "virtualbox" do |v|
+  		v.gui = true
+	end
+	config.vm.define "splunk" do |splunk|
+                splunk.vm.box = "puppetlabs/debian-7.8-32-nocm"
+                #set private static network address
+                splunk.vm.network :private_network, ip:'192.168.42.43'
+                #port forward splunk web interface to host machine
+                #can access interface at http://192.168.42.43:8000
+                splunk.vm.network "forwarded_port", guest:8000,host:8000
+                #provision splunk server
+                splunk.vm.provision "ansible" do |ansible|
+                        ansible.playbook = "splunk-server-setup.yml"
+                	ansible.verbose = true
+		end
+        end
+
 	config.vm.define "pi" do |pi|
-		pi.vm.box = "puppetlabs/debian-7.8-32-nocm"		
+		pi.vm.box = "puppetlabs/debian-7.8-32-puppet"		
 		
 		#set private static network address
 		pi.vm.network :private_network, ip:'192.168.42.42'
@@ -29,18 +42,5 @@ Vagrant.configure(2) do |config|
 		#	ansible.raw_arguments = ["--connection=paramiko"]
 		end
  	end
-
-	config.vm.define "splunk" do |splunk|
-  		splunk.vm.box = "puppetlabs/debian-7.8-32-nocm"
-		#set private static network address
-  		splunk.vm.network :private_network, ip:'192.168.42.43'
-		#port forward splunk web interface to host machine
-		#can access interface at http://192.168.42.43:8000
-		splunk.vm.network "forwarded_port", guest:8000,host:8000
-		#provision splunk server
-		splunk.vm.provision "ansible" do |ansible|
-			ansible.playbook = "splunk-server-setup.yml"
-		end
-	end
 end
 

@@ -6,7 +6,9 @@
   file: path=/opt/splunk state=directory
 
 - name: Download Splunk
-  get_url: url=http://download.splunk.com/products/splunk/releases/6.3.2/splunk/linux/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb dest=/opt/splunk/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb force=no
+  shell: wget https://download.splunk.com/products/splunk/releases/6.3.2/splunk/linux/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb; cp splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb /opt/splunk
+  args:
+    creates: /opt/splunk/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb
 
 - name: Install Splunk
   shell: dpkg -i /opt/splunk/splunk-6.3.2-aaff59bb082c-linux-2.6-intel.deb
