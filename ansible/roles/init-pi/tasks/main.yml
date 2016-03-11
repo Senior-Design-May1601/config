@@ -8,7 +8,7 @@
   user: name=pi password="{{pi_pass_hashed.stdout}}" groups=sudo append=yes
 
 #- name: Enable persistant vagrant access
-#  action: lineinfile dest=/etc/ssh/sshd_config regexp="^AllowUsers" line="AllowUsers vagrant" state=present
+#  action: lineinfile dest=/etc/ssh/sshd_config regexp="^AllowUsers" line="AllowUsers all" state=present
 
 - name: Install SystemD
   apt: name=systemd state=present
@@ -21,13 +21,9 @@
   async: 0
   poll: 0
   ignore_errors: true
-  when: reboot is undefined
+  when: ansible_service_mgr=="sysvinit"
 
 - name: Waiting for host to reboot
   local_action: wait_for host=192.168.42.42 state=started delay=60 connect_timeout=10 port=22
   sudo: false
-  when: reboot is undefined
-
-- name: Prevent future ansible reboots
-  set_fact: reboot="false"
-
+  when: ansible_service_mgr=="sysvinit"
