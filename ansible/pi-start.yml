@@ -9,4 +9,6 @@
 
     roles:
       - {role: init-pi, become: yes}
+      - {role: reboot, become: yes, host: 192.168.42.42, when: ansible_service_mgr=="sysvinit"}
+
 ...

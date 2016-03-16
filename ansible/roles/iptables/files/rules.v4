@@ -1,5 +1,8 @@
 *nat
 
+# DEBUG packet Logging
+-A INPUT -j LOG --log-prefix "iptables denied: " --log-level 7
+
 # redirect incoming 80 to 8080
 -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8080
 # we want to block public access to 8080 and only accept redirected packets,
@@ -28,6 +31,7 @@ COMMIT
 
 # allow initial ping -- future packets handled by established/related rule
 -A INPUT -p icmp --icmp-type 8 -m conntrack --ctstate NEW -j ACCEPT
+-A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
 
 # don't mess with established connections
 -A INPUT -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
@@ -46,7 +50,6 @@ COMMIT
 
 # allow inbound ssh
 -A INPUT -p tcp --dport 22 -j ACCEPT
-
 ## Microservice honeypot rules
 # http
 -A INPUT -p tcp --dport 8080 -j ACCEPT

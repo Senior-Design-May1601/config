@@ -1,0 +1,15 @@
+---
+galaxy_info:
+  author: Dan Borgerding
+  description: reboot {{ host }}
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+  - name: Debian
+    versions:
+    - jessie
+    - squeeze
+    - wheezy
+  categories:
+  - system
+dependencies: []

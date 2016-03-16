@@ -1,6 +1,10 @@
 ---
 - name: reload iptables
-  shell: echo "Reloading Iptables"; sudo iptables-restore < /etc/iptables/rules.v4
-  args:
-    executable: /bin/bash
-
+  shell: timeout --signal=SIGINT 2s iptables-restore < /etc/iptables/rules.v4 | echo
+#  async: 10
+#  poll: 2
+  ignore_errors: true
+  retries: 3
+  delay: 2
+  args: 
+   executable: /bin/bash

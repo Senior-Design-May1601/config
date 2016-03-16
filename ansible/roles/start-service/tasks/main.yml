@@ -1,9 +1,9 @@
 ---
-- name: Configure {{name}} service.
-  template: src=service.j2 dest="/etc/systemd/system/{{name}}.service" owner=root group=root mode=0644
+- name: Configure {{name}}.
+  template: src=service.j2 dest="/etc/systemd/system/{{name}}" owner=root group=root mode=0644
 
-- name: Enable {{name}} service at boot.
+- name: Enable {{name}} at boot.
   service: name={{name}} enabled=yes
 
-- name: Start {{name}} service.
+- name: Start {{name}}.
   service: name={{name}} state=started

@@ -15,8 +15,8 @@
         - {role: config-root-user, sudo: yes}
         - {role: config-deploy-user, sudo: yes}
         - {role: unprivileged-user, sudo: yes, unprivileged_user: webauth}
-       # - {role: lockdown-ssh, sudo: yes}
         - {role: iptables, sudo: yes}
+       # - {role: lockdown-ssh, sudo: yes}
 
 -
     name: Package install
@@ -55,4 +55,4 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: start-service, sudo: yes, name: webauth, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
+        - {role: start-service, sudo: yes, name: webauth.service, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
