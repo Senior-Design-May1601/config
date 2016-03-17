@@ -2,10 +2,18 @@
 
 - name: Install iptables-persistent
   apt: pkg=iptables-persistent state=present
-#  notify: reload iptables
 
 - name: Copy iptables rules
   copy: src=../files/rules.v4 dest=/etc/iptables/rules.v4 owner=root group=root mode=0644
-#  notify: reload iptables
+
+# We test the iptables ruleset. if/when it locks up, rules are reverted
+- name: Test iptables
+  shell: iptables-apply /etc/iptables/rules.v4
+  ignore_errors: true
+
+# set iptables ruleset after initial lockup
+- name: Reload iptables
+  shell: iptables-restore < /etc/iptables/rules.v4
+
 
 
