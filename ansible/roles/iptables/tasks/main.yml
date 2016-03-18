@@ -7,7 +7,7 @@
   copy: src=../files/rules.v4 dest=/etc/iptables/rules.v4 owner=root group=root mode=0644
 
 # We test the iptables ruleset. if/when it locks up, rules are reverted
-- name: Test iptables
+- name: Test iptables. This should fail.
   shell: iptables-apply /etc/iptables/rules.v4
   ignore_errors: true
 

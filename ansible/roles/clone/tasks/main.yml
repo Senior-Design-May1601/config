@@ -1,6 +1,11 @@
 ---
-- name: Create "{{dest}}" directory.
-  file: path={{dest}} state=directory
+- name: Create "{{Src_Dir}}/{{repo}}" directory.
+  file: path={{Src_Dir}}/{{repo}} state=directory
 
-- name: Clone "{{repo}}".
-  git: repo={{repo}} dest={{dest}} version=14eee6bf7e69593149445bea8dc1744adb647fcf force=yes
+- name: Clone "{{Repo_Main}}/{{repo}}".
+  git: repo={{Repo_Main}}/{{repo}} dest={{Src_Dir}}/{{repo}} version={{version}} force=yes
+  when: version is defined
+
+- name: Clone "{{Repo_Main}}/{{repo}}".
+  git: repo={{Repo_Main}}/{{repo}} dest={{Src_Dir}}/{{repo}} force=yes
+  when: version is undefined

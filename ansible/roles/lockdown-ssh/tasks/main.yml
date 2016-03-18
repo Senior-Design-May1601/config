@@ -19,10 +19,6 @@
   action: lineinfile dest=/etc/ssh/sshd_config regexp="^X11Forwarding" line="X11Forwarding no" state=present
   notify: restart ssh
 
-- name: Only allow deploy SSH user
-  action: lineinfile dest=/etc/ssh/sshd_config regexp="^AllowUsers" line="AllowUsers deploy" state=present
-  notify: restart ssh
-
 - name: Set modern SSH ciphers
   action: lineinfile dest=/etc/ssh/sshd_config regexp="^Ciphers" line="Ciphers chacha20-poly1305@openssh.com,aes256-gcm@openssh.com,aes128-gcm@openssh.com,aes256-ctr,aes192-ctr,aes128-ctr" state=present
   notify: restart ssh

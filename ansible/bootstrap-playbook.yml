@@ -3,7 +3,7 @@
 # TODO: better docs
 -
     name: System config
-    hosts: pi
+    hosts: all
     vars_files:
         - vars/secrets.yml
     vars:
@@ -12,29 +12,55 @@
         ansible_become_pass: "{{default_pi_pass}}"
         deploy_key: keys/deploy-key.pub
     roles:
-        - {role: config-root-user, sudo: yes}
-        - {role: config-deploy-user, sudo: yes}
-        - {role: unprivileged-user, sudo: yes, unprivileged_user: webauth}
-        - {role: iptables, sudo: yes}
-       # - {role: lockdown-ssh, sudo: yes}
+        - {role: config-root-user, become: yes}
+        - {role: config-deploy-user, become: yes}
+        - {role: unprivileged-user, become: yes, unprivileged_user: webauth}
+        - {role: iptables, become: yes}
 
 -
     name: Package install
-    hosts: pi
+    hosts: all
     vars_files:
         - vars/secrets.yml
     vars:
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
+
     roles:
-        - {role: git, sudo: yes}
-        - {role: golang, sudo: yes}
-        - {role: clone, repo: 'https://github.com/Senior-Design-May1601/webauth', dest: /home/deploy/src/webauth}
+        - {role: git, become: yes}
+        - {role: golang, become: yes}
+        - {role: dependencies}
+        - {role: clone, repo: webauth}
+        - {role: clone, repo: fssh}
+        - {role: clone, repo: Splunk}
+        - {role: clone, repo: projectmain}
+        - {role: clone, repo: filelogger}
 
 -
     name: Build
-    hosts: pi
+    hosts: all
+    vars_files:
+        - vars/secrets.yml
+    vars:
+        ansible_become_pass: "{{deploy_pass}}"
+        ansible_ssh_user: "{{deploy_user}}"
+        ansible_ssh_pass: "{{deploy_pass}}"
+    tasks:
+        - name: Create {{Work_Dir}} directory
+          file: path={{Work_Dir}} state=directory
+    roles:
+        - {role: build-go, package: projectmain}
+        - {role: build-go, package: filelogger}
+        - {role: build-go, package: Splunk}
+        - {role: build-go, package: fssh}
+        - {role: build-go, package: webauth}
+
+        #- {role: config-webauth}
+
+-
+    name: Config-Services
+    hosts: all
     vars_files:
         - vars/secrets.yml
     vars:
@@ -42,12 +68,11 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: build-go, bin_dir: /home/deploy/bin, src_dir: /home/deploy/src/webauth/webauth, package: webauth}
-        - {role: config-webauth}
+#TODO
 
 -
     name: Start Services
-    hosts: pi
+    hosts: all
     vars_files:
         - vars/secrets.yml
     vars:
@@ -55,4 +80,16 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: start-service, sudo: yes, name: webauth.service, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
+        - {role: start-service, become: yes, name: webauth.service, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
+
+-
+    name: Lockdown System
+    hosts: all
+    vars_files:
+        - vars/secrets.yml
+    vars: 
+        ansible_become_pass: "{{deploy_pass}}"
+        ansible_ssh_user: "{{deploy_user}}"
+        ansible_ssh_pass: "{{deploy_pass}}"
+    roles:
+       # - {role: lockdown-ssh, become: yes}

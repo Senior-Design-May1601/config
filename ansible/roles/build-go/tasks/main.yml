@@ -1,20 +1,8 @@
 ---
-#in version 2.0.0.2 this function causes a crash
-- name: Create {{bin_dir}} directory.
-  file: path={{bin_dir}} state=directory
-
-#temp make directory workaround
-#- name: Create "{{bin_dir}}" directory.
-#  shell: sudo mkdir -p "{{bin_dir}}"
-
-- name: source
-  shell: . /etc/profile
-
-- name: Build "{{package}}" package.
-  shell: source /etc/profile; go build
+- name: Build {{package}} package.
+  shell: . /etc/profile; go build
   args:
-    chdir: "{{src_dir}}"
-    executable: /bin/bash
+    chdir: "{{Src_Dir}}/{{package}}"
 
-- name: Move {{package}} to {{bin_dir}}.
-  command: mv {{src_dir}}/webauth {{bin_dir}}
+#- name: Move {{package}} to {{Work_Dir}}.
+#  command: mv {{Src_Dir}}/{{package}} {{Work_Dir}}
