@@ -6,6 +6,8 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+    tags:
+        - sysconfig
     vars:
         ansible_ssh_user: "{{default_pi_user}}"
         ansible_ssh_pass: "{{default_pi_pass}}"
@@ -22,6 +24,8 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+    tags:
+        - install
     vars:
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
@@ -42,6 +46,8 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+    tags:
+        - build
     vars:
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
@@ -63,6 +69,8 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+    tags:
+        - serviceConfig
     vars:
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
@@ -75,6 +83,8 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+    tags:
+        - serviceStart
     vars:
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"

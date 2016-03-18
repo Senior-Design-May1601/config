@@ -38,8 +38,7 @@ Vagrant.configure(2) do |config|
 			ansible.playbook = "bootstrap-playbook.yml"
 			ansible.force_remote_user = false
 			ansible.verbose = true
-		#force paramiko connection mode
-		#	ansible.raw_arguments = ["--connection=paramiko"]
+			ansible.tags="sysconfig,install,build,serviceConfig,serviceStart"
 		end
  	end
 end
