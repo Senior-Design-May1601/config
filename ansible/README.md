@@ -9,11 +9,11 @@ This set of ansible plays will setup a (TODO: name?) device.
 
 #### Dependencies
 
-There are several dependencies necessary to execute the these playbooks.
+There are several dependencies necessary to execute these playbooks.
 Note that Ansible should be installed using 'pip'.
 
 Make sure the following are installed:
-   * Ansible 1.9.3
+   * Ansible 2.0.1
    * Vagrant 1.8.1
    * Sshpass
 
