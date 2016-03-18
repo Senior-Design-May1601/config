@@ -38,6 +38,7 @@ Vagrant.configure(2) do |config|
 			ansible.playbook = "bootstrap-playbook.yml"
 			ansible.force_remote_user = false
 			ansible.verbose = true
+	#possible tags:sysconfig,install,build,serviceConfig,serviceStart
 			ansible.tags="sysconfig,install,build,serviceConfig,serviceStart"
 		end
  	end
