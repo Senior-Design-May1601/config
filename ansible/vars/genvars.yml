@@ -1,0 +1,10 @@
+#General variables for Senior-Design-May1601 playbooks
+#Variables such as source code links should be updated as needed.
+
+Go_Source: https://storage.googleapis.com/golang/go1.5.3.linux-386.tar.gz
+Go_Source_File: go1.5.3.linux-386.tar.gz
+Repo_Main: https://github.com/Senior-Design-May1601
+Src_Dir: /home/deploy/src/github.com/Senior-Design-May1601
+Work_Dir: /home/deploy/bin
+Splunk_Src: https://download.splunk.com/products/splunk/releases/6.3.3/linux/splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
+Splunk_Src_File: splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb

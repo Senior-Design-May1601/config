@@ -1,0 +1,57 @@
+---
+##Splunk config
+- name: "{{name}} Set URL"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/services/collector line='URL = \"{{url}}\"'"
+  when: url is defined
+
+- name: "{{name}} set AuthToken"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=12345 line='AuthToken = \"{{Token}}\"'"
+  when: Token is defined
+
+- name: "{{name}} set RootCA's"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/ca/cert.pem line='RootCAs = [\"{{rootca}}\"]'"
+  when: rootca is defined
+
+##webauth config
+
+- name: "{{name}} Set Cert"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=tls/dummy_cert.pem line='Cert = \"{{cert}}\"'"
+  when: cert is defined
+
+- name: "{{name}} Set Dummy Key"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=tls/dummy_key.pem line='Key = \"{{dkey}}\"'"
+  when: dkey is defined
+
+- name: "{{name}} Set LoginTemplate"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/templates/login.html line='LoginTemplate = \"{{template}}\"'"
+  when: template is defined
+
+##fssh config
+
+- name: "{{name}} Set Key"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/private/key line='Key = \"{{key}}\"'"
+  when: key is defined
+##ProjectMain config
+
+- name: "{{name}} Set Logfile"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/log/file line='Logfile = \"{{logfile}}\"'"
+  when: logfile is defined
+
+- name: "{{name}} Set LoggerPath"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=path/to/logger line='Path = \"{{logpath}}\"'"
+  when: logpath is defined
+
+- name: "{{name}}  projectmain config"
+  blockinfile: 
+    dest: "{{Src_Dir}}/projectmain/config.toml"
+    insertafter: EOF
+    regexp: "##{mark} {{name}} config"
+    marker: |   
+      ##{mark} {{name}} config 
+    state: present
+    block: |
+      [[PluginConfig]]
+      Name = "{{name}}"
+      Path = "{{path}}"
+      Args = ["{{args}}"]
+  when: (path is defined) and (args is defined)

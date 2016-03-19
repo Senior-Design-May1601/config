@@ -1,4 +1,6 @@
 keys/
-vars/
+vars/secrets.yml
 hosts/
 .vagrant/
+vars/inputs.conf
+vars/inputs.yml

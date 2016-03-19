@@ -4,6 +4,8 @@
 -
     name: Splunk
     hosts: splunk
+    vars_files:
+      - vars/genvars.yml
 
     roles:
       - {role: splunk-server, become: yes}

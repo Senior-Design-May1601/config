@@ -6,20 +6,39 @@
   file: path=/opt/splunk state=directory
 
 - name: Download Splunk
-  shell: wget http://download.splunk.com/products/splunk/releases/6.3.3/linux/splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb; cp splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb /opt/splunk
+  shell: wget {{Splunk_Src}}; cp {{Splunk_Src_File}} /opt/splunk
   args:
-    creates: splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
+    creates: "{{Splunk_Src_File}}"
 
 - name: Install Splunk
-  shell: dpkg -i splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
+  shell: dpkg -i {{Splunk_Src_File}}
     creates=/opt/splunk/bin/splunk
 
 - name: Start Splunk
   shell: /opt/splunk/bin/splunk start --accept-license
 
-#- name: Config Bash
-#  shell: export SPLUNK_HOME/opt/splunk
-#; export PATH=$SPLUNK_HOME/bin:$PATH; 
 - name: Config Splunk
-  shell: /opt/splunk/bin/splunk http-event-collector create Honeypot-Event -uri https://localhost:8089 -disabled 0 -index log -auth admin:changeme 
+  command: /opt/splunk/bin/splunk http-event-collector create Honeypot-Event -uri https://localhost:8089 -disabled 0 -index log -auth admin:changeme 
     creates=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf
+
+- name: Save Event-Collector-Data
+  fetch: dest=vars/ flat=yes src=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf fail_on_missing=true
+
+- name: Check If Inputs.conf exists on local machine
+  local_action: stat path=vars/inputs.conf 
+  register: conf
+
+- name: Rename Inputs.conf
+  local_action: shell mv vars/inputs.conf vars/token.yml
+  when: conf.stat.exists
+
+- name: Format token.yml
+  local_action: "replace dest=vars/token.yml regexp=' = ' replace=': '"
+
+#- name: Remove YAML Violations
+#  local_action: "replace dest=vars/token.yml regexp='[' replace='#' "
+
+- name: Remove YAML Violations
+  local_action: "lineinfile dest=vars/token.yml insertbefore=regex regexp='Honeypot-Event' line='#HTTP-EVENT-COLLECTOR Gen Vars'"
+
+

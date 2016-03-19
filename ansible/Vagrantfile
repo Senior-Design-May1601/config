@@ -2,6 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
+## To disable Virtual Box gui, set v.gui to false. 
 	config.vm.provider "virtualbox" do |v|
   		v.gui = true
 	end

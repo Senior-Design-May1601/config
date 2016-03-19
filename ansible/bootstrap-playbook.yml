@@ -6,6 +6,7 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+        - vars/genvars.yml
     tags:
         - sysconfig
     vars:
@@ -24,6 +25,7 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+        - vars/genvars.yml
     tags:
         - install
     vars:
@@ -40,12 +42,14 @@
         - {role: clone, repo: Splunk}
         - {role: clone, repo: projectmain}
         - {role: clone, repo: filelogger}
+        - {role: clone, repo: dnp3}
 
 -
     name: Build
     hosts: all
     vars_files:
         - vars/secrets.yml
+        - vars/genvars.yml
     tags:
         - build
     vars:
@@ -61,14 +65,16 @@
         - {role: build-go, package: Splunk}
         - {role: build-go, package: fssh}
         - {role: build-go, package: webauth}
-
+        - {role: build-go, package: dnp3}
         #- {role: config-webauth}
 
 -
     name: Config-Services
     hosts: all
     vars_files:
+        - [ "vars/token.yml", "vars/secrets.yml" ]
         - vars/secrets.yml
+        - vars/genvars.yml
     tags:
         - serviceConfig
     vars:
@@ -76,13 +82,18 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-#TODO
+        - {role: config_toml, name: Splunk, url: dummyurl, Token: "{{token}}", rootca: dummyroot, path: /a/fake/path, args: "sample\",\"arg"}
+        - {role: config_toml, name: webauth, cert: dummycert, dkey: dummykey, template: dummytemplate, path: /my/fake/path, args: "sick\",\"args\",\"bro"}
+        - {role: config_toml, name: fssh, key: dummykey, path: /still/fake/path, args: "anArgument"}
+        - {role: config_toml, name: projectmain, logfile: /insert/logfile/here, logpath: /this/is/log/path} 
+
 
 -
     name: Start Services
     hosts: all
     vars_files:
         - vars/secrets.yml
+        - vars/genvars.yml
     tags:
         - serviceStart
     vars:
@@ -97,6 +108,7 @@
     hosts: all
     vars_files:
         - vars/secrets.yml
+        - vars/genvars.yml
     vars: 
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
