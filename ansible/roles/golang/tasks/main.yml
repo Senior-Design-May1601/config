@@ -9,6 +9,15 @@
 - name: unpack tarball
   unarchive: src="/usr/local/src/{{Go_Source_File}}" dest=/usr/local/ copy=no
 
+- name: Go arm dependencies Mercurial
+  apt: name=mercurial state=present
+
+- name: Go arm dependencies gcc
+  apt: name=gcc state=present
+
+- name: Go arm dependencies libc6-dev
+  apt: name=libc6-dev state=present
+
   #standard: $ export PATH=$PATH:/usr/local/go/bin will not work
 - name: set GO path.
   lineinfile: "dest=/etc/profile state=present line='export PATH=$PATH:/usr/local/go/bin'"
