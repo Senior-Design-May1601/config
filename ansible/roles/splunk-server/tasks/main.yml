@@ -24,6 +24,9 @@
 - name: Save Event-Collector-Data
   fetch: dest=vars/ flat=yes src=/opt/splunk/etc/apps/splunk_httpinput/local/inputs.conf fail_on_missing=true
 
+- name: Save server.pem
+  fetch: dest=tmp/ flat=yes src=/opt/splunk/etc/auth/server.pem fail_on_missing=true
+
 - name: Check If Inputs.conf exists on local machine
   local_action: stat path=vars/inputs.conf 
   register: conf

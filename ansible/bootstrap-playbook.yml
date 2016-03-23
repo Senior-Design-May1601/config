@@ -18,7 +18,7 @@
         - {role: config-root-user, become: yes}
         - {role: config-deploy-user, become: yes}
         - {role: unprivileged-user, become: yes, unprivileged_user: webauth}
-        - {role: iptables, become: yes}
+       # - {role: iptables, become: yes}
 
 -
     name: Package install
@@ -82,10 +82,11 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: config_toml, name: Splunk, url: dummyurl, Token: "{{token}}", rootca: dummyroot, path: /a/fake/path, args: "sample\",\"arg"}
-        - {role: config_toml, name: webauth, cert: dummycert, dkey: dummykey, template: dummytemplate, path: /my/fake/path, args: "sick\",\"args\",\"bro"}
-        - {role: config_toml, name: fssh, key: dummykey, path: /still/fake/path, args: "anArgument"}
-        - {role: config_toml, name: projectmain, logfile: /insert/logfile/here, logpath: /this/is/log/path} 
+        - {role: config_toml, name: Splunk, url: /services/collector, CA: "{{Src_Dir}}/Splunk/server.pem", Token: "{{token}}", path: "{{Src_Dir}}/Splunk/Splunk", args: "-config\",\"{{Src_Dir}}/Splunk/config.toml"}
+        - {role: config_toml, name: webauth, cert: "{{Src_Dir}}/webauth/tls/dummy_cert.pem", dkey: "{{Src_Dir}}/webauth/tls/dummy_key.pem", template: "{{Src_Dir}}/webauth/templates/login.html", path: "{{Src_Dir}}/webauth/webauth", args: "-config\",\"{{Src_Dir}}/webauth/config.toml"}
+        - {role: config_toml, name: fssh, key: "{{Src_Dir}}/fssh/dummy_id_rsa", path: "{{Src_Dir}}/fssh/fssh", args: "-config\",\"{{Src_Dir}}/fssh/config.toml"}
+        - {role: config_toml, name: dnp3, path: "{{Src_Dir}}/dnp3/dnp3", args: "-config\",\"{{Src_Dir}}/dnp3/config.toml"}
+        - {role: config_toml, name: projectmain, logfile: "{{Src_Dir}}/projectmain/core.log", logpath: "{{Src_Dir}}/filelogger/filelogger", tags: debug} 
 
 
 -
@@ -101,7 +102,7 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: start-service, become: yes, name: webauth.service, description: "webauth honeypot", type: simple, user: webauth, exec_start: "/home/deploy/bin/webauth -config=/home/deploy/src/webauth/config/webauth_config.json", restart: always, wanted_by: "multi-user.target"}
+        - {role: start-service, become: yes, name: projectmain.service, description: "projectmain honeypot", type: simple, user: webauth, exec_start: "{{Src_Dir}}/projectmain/projectmain -config {{Src_Dir}}/projectmain/config.toml", restart: always, wanted_by: "multi-user.target"}
 
 -
     name: Lockdown System

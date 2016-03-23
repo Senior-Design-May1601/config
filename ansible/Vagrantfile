@@ -28,6 +28,7 @@ Vagrant.configure(2) do |config|
 		#pi.vm.network "forwarded_port", guest:22,host:22 
 		#disable synced folders for pi machine
 		#:pi.vm.synced_folder ".", "/vagrant", disabled:true
+		pi.vm.network "forwarded_port", guest:8080,host:8080
 
 		#build default Raspberry Pi environment	
 		pi.vm.provision "ansible" do |ansible|
@@ -39,8 +40,8 @@ Vagrant.configure(2) do |config|
 			ansible.playbook = "bootstrap-playbook.yml"
 			ansible.force_remote_user = false
 			ansible.verbose = true
-	#possible tags:sysconfig,install,build,serviceConfig,serviceStart
-			ansible.tags="sysconfig,install,build,serviceConfig,serviceStart"
+	#possible tags:sysconfig,install,build,serviceConfig,serviceStart,debug
+			ansible.tags="sysconfig,install,build,serviceConfig,serviceStart,debug"
 		end
  	end
 end

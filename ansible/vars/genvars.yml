@@ -2,12 +2,12 @@
 #Variables such as source code links should be updated as needed.
 
 #for use on VM debian. x86
-#Go_Source: https://storage.googleapis.com/golang/go1.6.linux-386.tar.gz
-#Go_Source_File: go1.6.linux-386.tar.gz
+Go_Source: https://storage.googleapis.com/golang/go1.6.linux-386.tar.gz
+Go_Source_File: go1.6.linux-386.tar.gz
 
 #for use on Raspbian
-Go_Source: https://storage.googleapis.com/golang/go1.6.linux-armv6l.tar.gz
-Go_Source_File: go1.6.linux-armv6l.tar.gz
+#Go_Source: https://storage.googleapis.com/golang/go1.6.linux-armv6l.tar.gz
+#Go_Source_File: go1.6.linux-armv6l.tar.gz
 
 Repo_Main: https://github.com/Senior-Design-May1601
 Src_Dir: /home/deploy/src/github.com/Senior-Design-May1601

@@ -8,9 +8,13 @@
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=12345 line='AuthToken = \"{{Token}}\"'"
   when: Token is defined
 
-- name: "{{name}} set RootCA's"
-  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/ca/cert.pem line='RootCAs = [\"{{rootca}}\"]'"
-  when: rootca is defined
+- name: "{{name}} set RootCA"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp='/path/to/ca/cert.pem' line='RootCAs = [\"{{CA}}\"]'"
+  when: CA is defined
+
+- name: "{{name}} Copy Splunk Auth certificate"
+  copy: src=tmp/server.pem dest={{Src_Dir}}/{{name}}/server.pem force=yes
+  when: Token is defined
 
 ##webauth config
 
@@ -31,7 +35,19 @@
 - name: "{{name}} Set Key"
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/private/key line='Key = \"{{key}}\"'"
   when: key is defined
+
 ##ProjectMain config
+- name: "{{name}} Wipe empty plugin"
+  blockinfile:
+    dest: "{{Src_Dir}}/projectmain/config.toml"
+    state: absent
+    marker: "##default plugin block removed"
+    block: |
+      [[PluginConfig]]
+      Name = "plugin"
+      Path = "/path/to/plugin"
+      Args = ["-config", "/path/to/config-file"]
+  when: logfile is defined
 
 - name: "{{name}} Set Logfile"
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/log/file line='Logfile = \"{{logfile}}\"'"

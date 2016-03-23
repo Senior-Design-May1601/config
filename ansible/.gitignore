@@ -4,3 +4,4 @@ hosts/
 .vagrant/
 vars/inputs.conf
 vars/inputs.yml
+tmp/server.pem
