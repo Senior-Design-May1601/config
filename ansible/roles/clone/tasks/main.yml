@@ -3,9 +3,5 @@
   file: path={{Src_Dir}}/{{repo}} state=directory
 
 - name: Clone "{{Repo_Main}}/{{repo}}".
-  git: repo={{Repo_Main}}/{{repo}} dest={{Src_Dir}}/{{repo}} version={{version}} force=yes
-  when: version is defined
-
-- name: Clone "{{Repo_Main}}/{{repo}}".
   git: repo={{Repo_Main}}/{{repo}} dest={{Src_Dir}}/{{repo}} force=yes
-  when: version is undefined
+

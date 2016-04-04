@@ -15,10 +15,11 @@
         ansible_become_pass: "{{default_pi_pass}}"
         deploy_key: keys/deploy-key.pub
     roles:
+        - {role: apt, name: whois, update: no, become: yes}
         - {role: config-root-user, become: yes}
         - {role: config-deploy-user, become: yes}
         - {role: unprivileged-user, become: yes, unprivileged_user: webauth}
-       # - {role: iptables, become: yes}
+        - {role: iptables, become: yes}
 
 -
     name: Package install
@@ -34,7 +35,7 @@
         ansible_ssh_pass: "{{deploy_pass}}"
 
     roles:
-        - {role: git, become: yes}
+        - {role: apt, name: git, update: yes, become: yes}
         - {role: golang, become: yes}
         - {role: dependencies}
         - {role: clone, repo: webauth}
@@ -66,13 +67,11 @@
         - {role: build-go, package: fssh}
         - {role: build-go, package: webauth}
         - {role: build-go, package: dnp3}
-        #- {role: config-webauth}
 
 -
     name: Config-Services
     hosts: all
     vars_files:
-        - [ "vars/token.yml", "vars/secrets.yml" ]
         - vars/secrets.yml
         - vars/genvars.yml
     tags:
@@ -82,11 +81,7 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: config_toml, name: Splunk, url: /services/collector, CA: "{{Src_Dir}}/Splunk/server.pem", Token: "{{token}}", path: "{{Src_Dir}}/Splunk/Splunk", args: "-config\",\"{{Src_Dir}}/Splunk/config.toml"}
-        - {role: config_toml, name: webauth, cert: "{{Src_Dir}}/webauth/tls/dummy_cert.pem", dkey: "{{Src_Dir}}/webauth/tls/dummy_key.pem", template: "{{Src_Dir}}/webauth/templates/login.html", path: "{{Src_Dir}}/webauth/webauth", args: "-config\",\"{{Src_Dir}}/webauth/config.toml"}
-        - {role: config_toml, name: fssh, key: "{{Src_Dir}}/fssh/dummy_id_rsa", path: "{{Src_Dir}}/fssh/fssh", args: "-config\",\"{{Src_Dir}}/fssh/config.toml"}
-        - {role: config_toml, name: dnp3, path: "{{Src_Dir}}/dnp3/dnp3", args: "-config\",\"{{Src_Dir}}/dnp3/config.toml"}
-        - {role: config_toml, name: projectmain, logfile: "{{Src_Dir}}/projectmain/core.log", logpath: "{{Src_Dir}}/filelogger/filelogger", tags: debug} 
+        - {role: main-config}
 
 
 -
@@ -102,7 +97,7 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: start-service, become: yes, name: projectmain.service, description: "projectmain honeypot", type: simple, user: webauth, exec_start: "{{Src_Dir}}/projectmain/projectmain -config {{Src_Dir}}/projectmain/config.toml", restart: always, wanted_by: "multi-user.target"}
+        - {role: start-service, become: yes, name: projectmain.service, description: "projectmain honeypot", type: simple, user: "{{deploy_user}}", exec_start: "{{Src_Dir}}/projectmain/projectmain -config {{Config_Dir}}/main-config.toml", restart: always, wanted_by: "multi-user.target"}
 
 -
     name: Lockdown System

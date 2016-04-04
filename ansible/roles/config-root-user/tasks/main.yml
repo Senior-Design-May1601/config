@@ -1,7 +1,4 @@
 ---
-- name: Install whois
-  apt: name=whois state=present
-
 - name: Hash root password in crypt format
   command: mkpasswd --method=SHA-512 {{root_pass}}
   register: rp_hashed

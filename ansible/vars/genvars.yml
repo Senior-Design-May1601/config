@@ -5,12 +5,20 @@
 Go_Source: https://storage.googleapis.com/golang/go1.6.linux-386.tar.gz
 Go_Source_File: go1.6.linux-386.tar.gz
 
-#for use on Raspbian
+#for use on Raspberry Pi Arm architecture
 #Go_Source: https://storage.googleapis.com/golang/go1.6.linux-armv6l.tar.gz
 #Go_Source_File: go1.6.linux-armv6l.tar.gz
 
 Repo_Main: https://github.com/Senior-Design-May1601
 Src_Dir: /home/deploy/src/github.com/Senior-Design-May1601
 Work_Dir: /home/deploy/bin
+Config_Dir: /etc/projectmain
+Allowed_Users: vagrant deploy pi
+# The static IP of the Host Machine deploying and administering updates to this device. For Vagrant Usage this value should be 10.0.2.2
+Admin_IP: 10.0.2.2
+
 Splunk_Src: https://download.splunk.com/products/splunk/releases/6.3.3/linux/splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
 Splunk_Src_File: splunk-6.3.3-f44afce176d0-linux-2.6-intel.deb
+splunkhost: 192.168.42.43
+pihost: 192.168.42.42
+

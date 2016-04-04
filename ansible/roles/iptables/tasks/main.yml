@@ -6,6 +6,9 @@
 - name: Copy iptables rules
   copy: src=../files/rules.v4 dest=/etc/iptables/rules.v4 owner=root group=root mode=0644
 
+- name: Update Allowed IP Adresses
+  action: "lineinfile dest=/etc/iptables/rules.v4 regexp='--dport 22' line='-A INPUT -p tcp -s {{Admin_IP}} --dport 22 -j ACCEPT' state=present"
+
 # We test the iptables ruleset. if/when it locks up, rules are reverted
 - name: Test iptables. This should fail.
   shell: iptables-apply /etc/iptables/rules.v4

@@ -5,3 +5,13 @@ hosts/
 vars/inputs.conf
 vars/inputs.yml
 tmp/server.pem
+config/dnp3-config.toml
+config/fssh-config.toml
+config/main-config.toml
+config/Splunk-config.toml
+config/webauth-config.toml
+config/cert.pem
+config/csr.pem
+config/privkey.pem
+config/ssh-dummy-key
+config/ssh-dummy-key.pub

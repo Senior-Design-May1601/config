@@ -6,7 +6,14 @@
     hosts: splunk
     vars_files:
       - vars/genvars.yml
-
     roles:
       - {role: splunk-server, become: yes}
+-
+    name: Splunk configurations
+    hosts: splunk
+    vars_files:
+      - vars/genvars.yml
+      - vars/token.yml
+    roles:
+      - {role: splunk-server-copy-certs, become: yes}
 ...

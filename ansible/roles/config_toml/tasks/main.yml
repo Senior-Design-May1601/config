@@ -1,5 +1,9 @@
 ---
 ##Splunk config
+- name: "{{name}} Set Host"
+  lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=localhost line='Host = \"{{host}}\"'"
+  when: host is defined
+
 - name: "{{name}} Set URL"
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/services/collector line='URL = \"{{url}}\"'"
   when: url is defined
@@ -37,17 +41,9 @@
   when: key is defined
 
 ##ProjectMain config
-- name: "{{name}} Wipe empty plugin"
-  blockinfile:
-    dest: "{{Src_Dir}}/projectmain/config.toml"
-    state: absent
-    marker: "##default plugin block removed"
-    block: |
-      [[PluginConfig]]
-      Name = "plugin"
-      Path = "/path/to/plugin"
-      Args = ["-config", "/path/to/config-file"]
-  when: logfile is defined
+#- name: "{{name}} Wipe empty plugin"
+#  replace: "dest='{{Src_Dir}}/projectmain/config.toml' regexp='^[[PluginConfig]]$\n^Name = \"plugin\"$\n^Path = \"/path/to/plugin\"$\n^Args = [\"-config\", \"/path/to/config-file\"]'"
+#  when: logfile is defined
 
 - name: "{{name}} Set Logfile"
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=/path/to/log/file line='Logfile = \"{{logfile}}\"'"
@@ -57,17 +53,35 @@
   lineinfile: "dest={{Src_Dir}}/{{name}}/config.toml backrefs=yes state=present regexp=path/to/logger line='Path = \"{{logpath}}\"'"
   when: logpath is defined
 
-- name: "{{name}}  projectmain config"
+- name: "{{name}}  projectmain Plugin Config"
   blockinfile: 
     dest: "{{Src_Dir}}/projectmain/config.toml"
     insertafter: EOF
     regexp: "##{mark} {{name}} config"
     marker: |   
       ##{mark} {{name}} config 
+
     state: present
     block: |
       [[PluginConfig]]
       Name = "{{name}}"
       Path = "{{path}}"
       Args = ["{{args}}"]
-  when: (path is defined) and (args is defined)
+  when: (path is defined) and (args is defined) and (Token is undefined)
+
+- name: "{{name}}  projectmain Logger Config"
+  blockinfile:
+    dest: "{{Src_Dir}}/projectmain/config.toml"
+    insertafter: EOF
+    regexp: "##{mark} {{name}} config"
+    marker: |
+      ##{mark} {{name}} config 
+
+    state: present
+    block: |
+      [[LoggerConfig]]
+      Name = "{{name}}"
+      Path = "{{path}}"
+      Args = ["{{args}}"]
+  when: (path is defined) and (args is defined) and (Token is defined)
+

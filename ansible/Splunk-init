@@ -1,0 +1,34 @@
+#! /usr/bin/env bash
+
+set -o errexit
+set -o nounset
+set -o pipefail
+set -o noclobber
+
+openssl genrsa -out privkey.pem 2048
+echo ""
+echo "TLS private key written to privkey.pem"
+echo ""
+echo "Next we'll generate a certificate signing request (CSR)."
+echo "You'll be asked a bunch of questions. Most of them don't matter and can be left blank."
+echo "The one thing you _MUST_ do is:"
+echo ""
+echo "  Set \"Common Name (e.g. server FQDN or YOUR name) []:\" to localhost"
+echo ""
+echo "Do not set the challenge."
+echo ""
+read -n 1 -p "Press any key to continue..."
+echo ""
+openssl req -new -key privkey.pem -out csr.pem
+echo ""
+openssl x509 -req -days 365 -in csr.pem -signkey privkey.pem -out cert.pem
+echo ""
+echo "TLS certificate written to cert.pem"
+echo ""
+echo "Creating SSH keys. Do not set a password"
+echo ""
+read -n 1 -p "Press any key to continue..."
+echo ""
+ssh-keygen -t ed25519 -a 100 -f ssh-dummy-key
+echo ""
+echo "SSH keys written to ssh-dummy-key and ssh-dummy-key.pub"

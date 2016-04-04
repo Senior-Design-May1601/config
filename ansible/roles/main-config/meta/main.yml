@@ -1,7 +1,7 @@
 ---
 galaxy_info:
-  author: Nik Kinkel
-  description: Setup the webauth config file.
+  author: Dan Borgerding
+  description: general config role for config.toml files in go directories.
   license: BSD
   min_ansible_version: 1.2
   platforms:
@@ -11,5 +11,5 @@ galaxy_info:
     - squeeze
     - wheezy
   categories:
-  - system
+  - development
 dependencies: []

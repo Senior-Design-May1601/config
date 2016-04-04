@@ -1,0 +1,30 @@
+---
+- name: create config directory
+  file: path={{Config_Dir}} state=directory owner={{deploy_user}} group={{deploy_user}}
+  become: true
+
+##Splunk config
+- name: Splunk Copy Cacert.pem"
+  copy: src=config/cert.pem dest={{Src_Dir}}/Splunk/cacert.pem force=yes owner=deploy
+
+- name: Splunk copy Splunk-config.toml
+  copy: src=config/toml/Splunk-config.toml dest={{Config_Dir}} owner=deploy
+##webauth config
+- name: webauth copy webauth-config.toml
+  copy: src=config/toml/webauth-config.toml dest={{Config_Dir}} owner=deploy
+##fssh config
+- name: fssh copy ssh-dummy-key
+  copy: src=config/ssh-dummy-key dest={{Src_Dir}}/fssh owner=deploy
+
+- name: fssh copy ssh-dummy-key.pub
+  copy: src=config/ssh-dummy-key.pub dest={{Src_Dir}}/fssh owner=deploy
+
+- name: fssh copy fssh.config.toml
+  copy: src=config/toml/fssh-config.toml dest={{Config_Dir}} owner=deploy
+##dnp3 config
+- name: dnp3 copy dnp-config.toml
+  copy: src=config/toml/dnp3-config.toml dest={{Config_Dir}} owner=deploy
+##main config
+- name: projectmain copy main-config.toml
+  copy: src=config/toml/main-config.toml dest={{Config_Dir}} owner=deploy
+

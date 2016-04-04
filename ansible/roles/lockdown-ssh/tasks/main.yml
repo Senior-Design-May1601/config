@@ -28,3 +28,8 @@
   notify: restart ssh
 
 # TODO: change SSH port
+- name: Set User Access
+  action: "lineinfile dest=/etc/ssh/sshd_config regexp='^AllowUsers' line='^AllowUsers {{Allowed_Users}}' state=present"
+
+
+

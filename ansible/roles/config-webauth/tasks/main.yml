@@ -1,3 +1,0 @@
----
-- name: Copy webauth_config.json
-  copy: src=../files/webauth_config.json dest=/home/deploy/src/webauth/config/webauth_config.json owner=deploy group=deploy mode=0644

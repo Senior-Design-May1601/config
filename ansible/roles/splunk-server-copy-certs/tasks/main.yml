@@ -1,0 +1,43 @@
+---
+##for documentation on configuring splunk http-eventcollector via CLI visit
+##http://dev.splunk.com/view/event-collector/SP-CAAAE7D
+
+#set the authToken parameter in Splunk-config.toml to be transfered to Honeypot
+- name: Set Splunk AuthToken
+  local_action: "lineinfile dest=config/toml/Splunk-config.toml backrefs=yes state=present regexp='AuthToken' line='AuthToken = \"{{token}}\"' backrefs=yes"
+
+- name: Copy certs appsCA
+  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/appsCA.pem force=yes
+
+- name: Copy certs cacert
+  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/cacert.pem force=yes
+
+- name: Copy certs cacert.default
+  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/cacert.pem.default force=yes
+
+- name: Copy certs ca
+  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/ca.pem force=yes
+
+- name: Copy certs ca.default
+  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/ca.pem.default force=yes
+
+#- name: Copy certs ca.srl
+#  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/ca.srl force=yes
+
+#- name: Copy certs devCACert
+#  copy: src=config/cert.pem dest=/opt/splunk/etc/auth/devCACert.pem force=yes
+
+#- name: Copy certs DevCAprivate
+#  copy: src=config/privkey.pem dest=/opt/splunk/etc/auth/devCAPrivate.key force=yes
+- name: Copy certs PrivKeySecure
+  copy: src=config/privkey.pem dest=/opt/splunk/etc/auth/privKeySecure.pem force=yes
+
+- name: Copy certs server
+  copy: src=config/privkey.pem dest=/opt/splunk/etc/auth/server.pem force=yes
+
+#- name: Copy certs req
+#  copy: src=config/privkey.pem dest=/opt/splunk/etc/auth/req.pem force=yes
+
+- name: Restart Splunk
+  shell: /opt/splunk/bin/splunk restart;
+  become: true

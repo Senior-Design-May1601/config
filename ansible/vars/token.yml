@@ -1,4 +1,8 @@
 #HTTP-EVENT-COLLECTOR Gen Vars
 disabled: 0
-index: log
-token: 265F49BE-532C-4485-9B6C-FDF46AA2032B
+index: main
+token: 7E6AA649-B134-48EE-B340-B130C437E216
+indexes: main
+
+#http
+
