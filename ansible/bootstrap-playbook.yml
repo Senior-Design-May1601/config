@@ -36,6 +36,7 @@
 
     roles:
         - {role: apt, name: git, update: yes, become: yes}
+        - {role: apt, name: libcap2-bin, update: no, become: yes}
         - {role: golang, become: yes}
         - {role: dependencies}
         - {role: clone, repo: webauth}
@@ -63,10 +64,10 @@
     roles:
         - {role: build-go, package: projectmain}
         - {role: build-go, package: filelogger}
-        - {role: build-go, package: Splunk}
-        - {role: build-go, package: fssh}
-        - {role: build-go, package: webauth}
-        - {role: build-go, package: dnp3}
+        - {role: privileged-build-go, package: Splunk}
+        - {role: privileged-build-go, package: fssh}
+        - {role: privileged-build-go, package: webauth}
+        - {role: privileged-build-go, package: dnp3}
 
 -
     name: Config-Services

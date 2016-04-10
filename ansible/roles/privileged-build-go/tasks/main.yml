@@ -1,0 +1,10 @@
+---
+- name: Build {{package}} package.
+  shell: . /etc/profile; go build;
+  args:
+    chdir: "{{Src_Dir}}/{{package}}"
+
+- name: Allow low port access
+  shell: "setcap 'cap_net_bind_service=+ep' {{Src_Dir}}/{{package}}/{{package}}"
+  become: true
+

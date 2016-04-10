@@ -1,7 +1,7 @@
-Host = "192.168.42.42"
+Host = "0.0.0.0"
 Cert = "/home/deploy/src/github.com/Senior-Design-May1601/webauth/tls/dummy_cert.pem"
 Key = "/home/deploy/src/github.com/Senior-Design-May1601/webauth/tls/dummy_key.pem"
-HTTPPort = 8080
-HTTPSPort = 8443
+HTTPPort = 80
+HTTPSPort = 443
 LoginTemplate = "/home/deploy/src/github.com/Senior-Design-May1601/webauth/templates/login.html"
 
