@@ -15,3 +15,9 @@
 
 - name: Install Systemd-sysv
   shell: echo "Yes, do as I say!" | apt-get install -y -q --force-yes systemd-sysv   
+
+- name: Setup public key auth for Pi account(testing only)
+  authorized_key: user=pi
+                  key="{{lookup('file', item)}}"
+  with_items: deploy_key
+

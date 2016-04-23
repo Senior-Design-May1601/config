@@ -16,7 +16,7 @@ mkdir -p ${KEY_DIR} ${HOSTS_DIR} ${VAR_DIR}
 touch ${HOSTS_DIR}/hosts
 touch ${HOSTS_DIR}/new
 
-echo "default_pi_user: pi" > ${SECRETS_FILE}
+echo "default_pi_user: pi" >> ${SECRETS_FILE}
 echo "default_pi_pass: raspberry" >> ${SECRETS_FILE}
 echo "deploy_user: deploy" >> ${SECRETS_FILE}
 
@@ -25,6 +25,14 @@ echo "root_pass: $(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" >> ${SECRETS_
 
 echo "Generating new deploy password."
 echo "deploy_pass: $(head -c 32 /dev/urandom | xxd -p | tr -d '\n')" >> ${SECRETS_FILE}
+
+echo "Please enter an administrative email address(es) to supply Apticron which will be notified upon timely linux operating system security updates. Seperate multiple addresses with a single space."
+read email
+echo "admin_email: $email" >> ${SECRETS_FILE}
+echo "Please enter your Splunk HTTP-EVENT_COLLECTOR token parameter"
+read token
+echo "token: $token" >> ${SECRETS_FILE}
+
 
 echo ""
 echo "The password file will be encrypted using ansible-vault."

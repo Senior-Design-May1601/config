@@ -28,3 +28,7 @@
 - name: projectmain copy main-config.toml
   copy: src=config/toml/main-config.toml dest={{Config_Dir}} owner=deploy
 
+- name: Add files to plugin_manager group
+  file: path={{Config_Dir}} group=plugin_manager recurse=yes
+  become: yes
+

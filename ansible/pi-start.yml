@@ -6,6 +6,8 @@
     hosts: pi
     vars_files:
         - vars/secrets.yml
+    vars:
+        deploy_key: keys/deploy-key.pub 
 
     roles:
       - {role: init-pi, become: yes}

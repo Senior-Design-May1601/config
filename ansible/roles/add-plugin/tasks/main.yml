@@ -1,0 +1,21 @@
+---
+- name: Plugin Group
+  group: name=plugin state=present system=yes
+
+- name: Create unprivileged plugin user {{plugin}}.
+  user: name={{plugin}} shell=/bin/false createhome=no system=yes state=present group=plugin
+
+- name: Create {{Src_Dir}}/{{plugin}} directory.
+  file: path={{Src_Dir}}/{{plugin}} state=directory
+
+- name: Clone {{Repo_Main}}/{{plugin}}.
+  git: repo={{Repo_Main}}/{{plugin}} dest={{Src_Dir}}/{{repo}} force=yes
+
+- name: Build {{plugin}} package.
+  shell: . /etc/profile; go install
+  args:
+    chdir: "{{Src_Dir}}/{{plugin}}"
+  become_user: "{{plugin}}"
+
+
+ 

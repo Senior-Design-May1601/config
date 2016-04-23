@@ -1,8 +1,11 @@
 ---
 - name: Build {{package}} package.
-  shell: . /etc/profile; go build
+  shell: . /etc/profile; go install
   args:
     chdir: "{{Src_Dir}}/{{package}}"
 
+- name: Add {{package}} to plugin_manager group
+  file: path={{Bin_Dir}}/{{package}} group=plugin_manager
+  become: yes
 #- name: Move {{package}} to {{Work_Dir}}.
 #  command: mv {{Src_Dir}}/{{package}} {{Work_Dir}}

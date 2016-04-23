@@ -2,6 +2,6 @@
 Host = "192.168.42.43"
 Port = 8088
 URL = "/services/collector"
-AuthToken = "CF141FE6-85B1-4BE6-B2DE-1FB9FA01793A"
+AuthToken = "603E1CDC-C9CC-41E1-B00E-D7DC19C2F81A"
 RootCAs = ["/home/deploy/src/github.com/Senior-Design-May1601/Splunk/cacert.pem"]
 

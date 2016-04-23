@@ -1,6 +1,11 @@
 ---
 - name: Clone Burnt Sushi
-  git: repo=https://github.com/BurntSushi/toml dest=/home/deploy/src/github.com/BurntSushi/toml
+  shell: source /etc/profile; go get github.com/BurntSushi/toml
+  args:
+    chdir: "/home/deploy/"
+    executable: /bin/bash  
+
+#git: repo=https://github.com/BurntSushi/toml dest=/home/deploy/src/github.com/BurntSushi/toml
 
 - name: Install Go Crypto Package
   shell: source /etc/profile; go get -v golang.org/x/crypto/ssh

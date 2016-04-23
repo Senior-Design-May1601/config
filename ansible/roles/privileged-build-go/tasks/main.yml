@@ -1,10 +1,13 @@
 ---
 - name: Build {{package}} package.
-  shell: . /etc/profile; go build;
+  shell: . /etc/profile; go install;
   args:
     chdir: "{{Src_Dir}}/{{package}}"
 
 - name: Allow low port access
-  shell: "setcap 'cap_net_bind_service=+ep' {{Src_Dir}}/{{package}}/{{package}}"
+  shell: "setcap 'cap_net_bind_service=+ep' {{Bin_Dir}}/{{package}}"
   become: true
 
+- name: Add {{package}} to plugin_manager group
+  file: path={{Bin_Dir}}/{{package}} group=plugin_manager
+  become: true

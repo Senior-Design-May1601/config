@@ -15,12 +15,12 @@
         ansible_become_pass: "{{default_pi_pass}}"
         deploy_key: keys/deploy-key.pub
     roles:
-        - {role: apt, name: whois, update: no, become: yes}
+        - {role: apt, become: yes}
         - {role: config-root-user, become: yes}
         - {role: config-deploy-user, become: yes}
-        - {role: unprivileged-user, become: yes, unprivileged_user: webauth}
+        - {role: unprivileged-user, become: yes, unprivileged_user: plugin_manager}
         - {role: iptables, become: yes}
-
+        #- {role: lockdown-ssh, become: yes}
 -
     name: Package install
     hosts: all
@@ -35,17 +35,13 @@
         ansible_ssh_pass: "{{deploy_pass}}"
 
     roles:
-        - {role: apt, name: git, update: yes, become: yes}
-        - {role: apt, name: libcap2-bin, update: no, become: yes}
-        - {role: golang, become: yes}
-        - {role: dependencies}
+        - {role: golang}
         - {role: clone, repo: webauth}
         - {role: clone, repo: fssh}
         - {role: clone, repo: Splunk}
         - {role: clone, repo: projectmain}
         - {role: clone, repo: filelogger}
         - {role: clone, repo: dnp3}
-
 -
     name: Build
     hosts: all
@@ -58,9 +54,6 @@
         ansible_become_pass: "{{deploy_pass}}"
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
-    tasks:
-        - name: Create {{Work_Dir}} directory
-          file: path={{Work_Dir}} state=directory
     roles:
         - {role: build-go, package: projectmain}
         - {role: build-go, package: filelogger}
@@ -68,7 +61,6 @@
         - {role: privileged-build-go, package: fssh}
         - {role: privileged-build-go, package: webauth}
         - {role: privileged-build-go, package: dnp3}
-
 -
     name: Config-Services
     hosts: all
@@ -83,8 +75,6 @@
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
         - {role: main-config}
-
-
 -
     name: Start Services
     hosts: all
@@ -98,17 +88,4 @@
         ansible_ssh_user: "{{deploy_user}}"
         ansible_ssh_pass: "{{deploy_pass}}"
     roles:
-        - {role: start-service, become: yes, name: projectmain.service, description: "projectmain honeypot", type: simple, user: "{{deploy_user}}", exec_start: "{{Src_Dir}}/projectmain/projectmain -config {{Config_Dir}}/main-config.toml", restart: always, wanted_by: "multi-user.target"}
-
--
-    name: Lockdown System
-    hosts: all
-    vars_files:
-        - vars/secrets.yml
-        - vars/genvars.yml
-    vars: 
-        ansible_become_pass: "{{deploy_pass}}"
-        ansible_ssh_user: "{{deploy_user}}"
-        ansible_ssh_pass: "{{deploy_pass}}"
-    roles:
-       # - {role: lockdown-ssh, become: yes}
+        - {role: start-service, become: yes, name: projectmain.service, description: "projectmain honeypot", type: simple, user: "plugin_manager", exec_start: "{{Bin_Dir}}/projectmain -config {{Config_Dir}}/main-config.toml", restart: always, wanted_by: "multi-user.target"}

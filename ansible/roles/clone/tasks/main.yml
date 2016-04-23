@@ -5,3 +5,7 @@
 - name: Clone "{{Repo_Main}}/{{repo}}".
   git: repo={{Repo_Main}}/{{repo}} dest={{Src_Dir}}/{{repo}} force=yes
 
+- name: Add {{repo}} to plugin_manager group
+  file: path={{Src_Dir}}/{{repo}} group=plugin_manager recurse=yes
+  become: yes
+

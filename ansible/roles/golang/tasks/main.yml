@@ -1,26 +1,50 @@
 ---
 ##installs dated version of goLang, opt to install from source
+##TODO test if raspbian repo's have applicable version for crypto package
 #- name: Install golang.
 #  apt: name=golang state=present
 
 - name: Download Go Tarball.
   get_url: url="{{Go_Source}}" dest="/usr/local/src/{{Go_Source_File}}"
+  become: true
 
 - name: unpack tarball
   unarchive: src="/usr/local/src/{{Go_Source_File}}" dest=/usr/local/ copy=no
+  become: true
 
 - name: Go arm dependencies Mercurial
   apt: name=mercurial state=present
+  become: true
 
 - name: Go arm dependencies gcc
   apt: name=gcc state=present
+  become: true
 
 - name: Go arm dependencies libc6-dev
   apt: name=libc6-dev state=present
+  become: true
 
   #standard: $ export PATH=$PATH:/usr/local/go/bin will not work
 - name: set GO path.
   lineinfile: "dest=/etc/profile state=present line='export PATH=$PATH:/usr/local/go/bin'"
+  become: true
 
 - name: set GOPATH.
-  lineinfile: "dest=/etc/profile state=present line='export GOPATH=$HOME'"
+  lineinfile: "dest=/etc/profile state=present line='export GOPATH=/home/deploy'"
+  become: true
+
+- name: Clone Burnt Sushi 
+  shell: source /etc/profile; go get -v github.com/BurntSushi/toml
+  args:
+    chdir: "/home/deploy/"
+    executable: /bin/bash  
+  become: false
+#  become_user: deploy
+      
+- name: Install Go Crypto Package
+  shell: source /etc/profile; go get -v golang.org/x/crypto/ssh
+  args:
+    chdir: "/home/deploy/"
+    executable: /bin/bash
+  become: false
+#  become_user: deploy
