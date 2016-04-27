@@ -1,28 +1,27 @@
 [MasterConfig]
-Logfile = "/home/deploy/src/github.com/Senior-Design-May1601/projectmain/core.log"
+Logfile = "/var/log/projectmain/core.log"
 
-[[LoggerConfig]]
-Name = "logger"
-Path = "/home/deploy/bin/filelogger"
-##BEGIN Splunk config
+#[[LoggerConfig]]
+#Name = "logger"
+#Path = "/usr/local/bin/filelogger"
 
 [[LoggerConfig]]
 Name = "Splunk"
-Path = "/home/deploy/bin/Splunk"
+Path = "/usr/local/bin/Splunk"
 Args = ["-config","/etc/projectmain/Splunk-config.toml"]
 
 [[PluginConfig]]
 Name = "webauth"
-Path = "/home/deploy/bin/webauth"
+Path = "/usr/local/bin/webauth"
 Args = ["-config","/etc/projectmain/webauth-config.toml"]
 
 [[PluginConfig]]
 Name = "fssh"
-Path = "/home/deploy/bin/fssh"
+Path = "/usr/local/bin/fssh"
 Args = ["-config","/etc/projectmain/fssh-config.toml"]
 
 [[PluginConfig]]
 Name = "dnp3"
-Path = "/home/deploy/bin/dnp3"
+Path = "/usr/local/bin/dnp3"
 Args = ["-config","/etc/projectmain/dnp3-config.toml"]
 

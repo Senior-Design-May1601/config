@@ -33,6 +33,14 @@
   lineinfile: "dest=/etc/profile state=present line='export GOPATH=/home/deploy'"
   become: true
 
+- name: set GOBIN.
+  lineinfile: "dest=/etc/profile state=present line='export GOBIN=/usr/local/bin'"
+  become: true
+
+- name: Give bin permissions
+  file: path={{Bin_Dir}} mode=0777
+  become: yes
+
 - name: Clone Burnt Sushi 
   shell: source /etc/profile; go get -v github.com/BurntSushi/toml
   args:

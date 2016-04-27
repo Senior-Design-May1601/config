@@ -1,3 +1,6 @@
 ---
+- name: Create {{unprivileged_user}} group
+  group: name={{unprivileged_user}} state=present system=no
+
 - name: Create unprivileged "{{unprivileged_user}}" user.
-  user: name="{{unprivileged_user}}" shell=/bin/false createhome=no system=yes state=present
+  user: name="{{unprivileged_user}}" shell=/bin/false createhome=no system=yes state=present groups={{unprivileged_user}}

@@ -4,10 +4,10 @@
   args:
     chdir: "{{Src_Dir}}/{{package}}"
 
-- name: Allow low port access
-  shell: "setcap 'cap_net_bind_service=+ep' {{Bin_Dir}}/{{package}}"
+- name: Add {{package}} to plugin_manager group
+  file: path={{Bin_Dir}}/{{package}} group=plugin_manager mode=0775
   become: true
 
-- name: Add {{package}} to plugin_manager group
-  file: path={{Bin_Dir}}/{{package}} group=plugin_manager
+- name: Allow low port access
+  shell: "setcap 'cap_net_bind_service=+ep' {{Bin_Dir}}/{{package}}"
   become: true

@@ -1,6 +1,10 @@
 ---
-- name: create config directory
-  file: path={{Config_Dir}} state=directory owner={{deploy_user}} group={{deploy_user}}
+- name: Create config directory
+  file: path={{Config_Dir}} state=directory owner={{deploy_user}} group=plugin_manager
+  become: true
+
+- name: Create log directory
+  file: path=/var/log/projectmain state=directory owner={{deploy_user}} group=plugin_manager mode=0775
   become: true
 
 ##Splunk config
@@ -29,6 +33,6 @@
   copy: src=config/toml/main-config.toml dest={{Config_Dir}} owner=deploy
 
 - name: Add files to plugin_manager group
-  file: path={{Config_Dir}} group=plugin_manager recurse=yes
+  file: path={{Config_Dir}} group=plugin_manager recurse=yes mode=0755
   become: yes
 

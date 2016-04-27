@@ -4,6 +4,7 @@ hosts/
 .vagrant/
 vars/inputs.conf
 vars/inputs.yml
+vars/token.yml
 config/toml/dnp3-config.toml
 config/toml/fssh-config.toml
 config/toml/main-config.toml

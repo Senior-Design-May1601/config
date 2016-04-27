@@ -11,7 +11,7 @@ Go_Source_File: go1.6.linux-386.tar.gz
 
 Repo_Main: https://github.com/Senior-Design-May1601
 Src_Dir: /home/deploy/src/github.com/Senior-Design-May1601
-Bin_Dir: /home/deploy/bin
+Bin_Dir: /usr/local/bin
 Config_Dir: /etc/projectmain
 Allowed_Users: vagrant deploy pi
 # The static IP of the Host Machine deploying and administering updates to this device. For Vagrant Usage this value should be 10.0.2.2
